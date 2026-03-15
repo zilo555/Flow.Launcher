@@ -246,8 +246,8 @@ namespace Flow.Launcher.Infrastructure
 
             foreach (char c in normalized)
             {
-                var unicodedCategory = Char.GetUnicodeCategory(c);
-                if (unicodedCategory != UnicodeCategory.NonSpacingMark)
+                var unicodeCategory = char.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
                     sb.Append(c);
             }
 
