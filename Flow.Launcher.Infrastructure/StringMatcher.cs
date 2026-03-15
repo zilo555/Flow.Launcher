@@ -71,6 +71,8 @@ namespace Flow.Launcher.Infrastructure
             query = query.Trim();
             query = RemoveAccents(query);
             stringToCompare = RemoveAccents(stringToCompare);
+            if (string.IsNullOrWhiteSpace(query) || string.IsNullOrEmpty(stringToCompare))
+                return new MatchResult(false, UserSettingSearchPrecision);
             TranslationMapping translationMapping = null;
             if (_alphabet is not null && _alphabet.ShouldTranslate(query))
             {
