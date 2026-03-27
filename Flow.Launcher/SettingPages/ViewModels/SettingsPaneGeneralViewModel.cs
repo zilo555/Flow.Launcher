@@ -196,6 +196,19 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
         }
     }
 
+    public bool SensitiveAccents
+    {
+        get => Settings.SensitiveAccents;
+        set
+        {
+            if (Settings.SensitiveAccents != value)
+            {
+                Settings.SensitiveAccents = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     public int MaxHistoryResultsToShowValue
     {
         get => Settings.MaxHistoryResultsToShowForHomePage;

@@ -359,6 +359,20 @@ namespace Flow.Launcher.Infrastructure.UserSettings
             }
         }
 
+        private bool _sensitiveAccents = false;
+        public bool SensitiveAccents
+        {
+            get => _sensitiveAccents;
+            set
+            {
+                if (_sensitiveAccents != value)
+                {
+                    _sensitiveAccents = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool _useDoublePinyin = false;
         public bool UseDoublePinyin
         {
