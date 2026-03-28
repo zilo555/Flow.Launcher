@@ -92,7 +92,7 @@
                     OnContent="{DynamicResource enable}" />
             </ui:SettingsCard>
             <ui:SettingsCard
-                Description="{DynamicResource ignoreAccents ToolTip}"
+                Description="{DynamicResource ignoreAccentsToolTip}"
                 Header="{DynamicResource ignoreAccents}">
                 <ui:ToggleSwitch
                     IsOn="{Binding IgnoreAccents}"
