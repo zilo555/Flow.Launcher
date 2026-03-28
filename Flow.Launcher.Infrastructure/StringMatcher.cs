@@ -29,6 +29,8 @@ namespace Flow.Launcher.Infrastructure
         public StringMatcher(IAlphabet alphabet)
         {
             _alphabet = alphabet;
+            _settings = new Settings();
+            UserSettingSearchPrecision = _settings.QuerySearchPrecision;
         }
 
         public static MatchResult FuzzySearch(string query, string stringToCompare)
