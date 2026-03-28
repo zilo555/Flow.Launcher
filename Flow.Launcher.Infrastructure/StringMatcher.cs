@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Plugin.SharedModels;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using Flow.Launcher.Infrastructure.UserSettings;
+using JetBrains.Annotations;
 
 namespace Flow.Launcher.Infrastructure
 {
@@ -256,14 +259,23 @@ namespace Flow.Launcher.Infrastructure
         };
         public static string Normalize(string value)
         {
-            Span<char> buffer = stackalloc char[value.Length];
-            for (int i = 0; i < value.Length; i++)
+            if(string.IsNullOrEmpty(value)) return value;
+            char[] arrayFromPool = null;
+            Span<char> buffer = value.Length <= 512 ? stackalloc char[value.Length] : (arrayFromPool = ArrayPool<char>.Shared.Rent(value.Length));
+            try
             {
-                var c = char.ToLowerInvariant(value[i]);
-                buffer[i] = AccentMap.TryGetValue(c, out var mapped) ? mapped : c;
+                for (int i = 0; i < value.Length; i++)
+                {
+                    var c = char.ToLowerInvariant(value[i]);
+                    buffer[i] = AccentMap.TryGetValue(c, out var mapped) ? mapped : c;
+                }
+                return new string(buffer.Slice(0, value.Length));
             }
-
-            return new string(buffer);
+            finally
+            {
+                if(arrayFromPool != null)
+                    ArrayPool<char>.Shared.Return(arrayFromPool);
+            }
         }
         private static bool IsAcronym(string stringToCompare, int compareStringIndex)
         {
