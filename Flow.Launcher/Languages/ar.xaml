@@ -121,11 +121,6 @@
     <system:String x:Key="select">اختر</system:String>
     <system:String x:Key="hideOnStartup">إخفاء Flow Launcher عند بدء التشغيل</system:String>
     <system:String x:Key="hideOnStartupToolTip">يتم إخفاء نافذة بحث Flow Launcher في العلبة بعد بدء التشغيل.</system:String>
-    <system:String x:Key="sensitiveAccent">تمكين حساسية التشكيل عند البحث عن البرامج.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">عند تغيير هذا الخيار، يلزم إعادة التشغيل. عند التمكين، ستتمكن من العثور على البرامج التي تحتوي على أحرف مشكلة بسهولة أكبر.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">إعادة التشغيل مطلوبة</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">تغيير حساسية التشكيل يتطلب إعادة تشغيل Flow Launcher ليصبح ساري المفعول.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">إعادة التشغيل الآن</system:String>
     <system:String x:Key="hideNotifyIcon">إخفاء أيقونة العلبة</system:String>
     <system:String x:Key="hideNotifyIconToolTip">عندما تكون الأيقونة مخفية من العلبة، يمكن فتح قائمة الإعدادات عن طريق النقر بزر الماوس الأيمن على نافذة البحث.</system:String>
     <system:String x:Key="querySearchPrecision">دقة البحث في الاستعلام</system:String>

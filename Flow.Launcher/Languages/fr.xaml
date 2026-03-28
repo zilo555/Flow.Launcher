@@ -121,11 +121,6 @@
     <system:String x:Key="select">Sélectionner</system:String>
     <system:String x:Key="hideOnStartup">Cacher Flow Launcher au démarrage</system:String>
     <system:String x:Key="hideOnStartupToolTip">La fenêtre de recherche de Flow Launcher est cachée dans la barre d’état après le démarrage.</system:String>
-    <system:String x:Key="sensitiveAccent">Activer la sensibilité aux accents lors de la recherche de programmes.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">Lorsque cette option est modifiée, un redémarrage est nécessaire. Lorsqu'elle est activée, vous pourrez trouver plus facilement les programmes contenant des caractères accentués.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Redémarrage requis</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">La modification de la sensibilité aux accents nécessite un redémarrage de Flow Launcher pour prendre effet.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Redémarrer maintenant</system:String>
     <system:String x:Key="hideNotifyIcon">Masquer l'icône de la barre des tâches</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Lorsque l'icône est cachée dans la barre de tâches, le menu Paramètres peut être ouvert en faisant un clic droit sur la barre de recherche.</system:String>
     <system:String x:Key="querySearchPrecision">Précision de la recherche</system:String>

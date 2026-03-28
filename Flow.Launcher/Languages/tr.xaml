@@ -121,11 +121,6 @@
     <system:String x:Key="select">Seç</system:String>
     <system:String x:Key="hideOnStartup">Başlangıçta Pencereyi Gizle</system:String>
     <system:String x:Key="hideOnStartupToolTip">Arama kutusu başlangıçtan sonra sistem tepsisinde gizlenir.</system:String>
-    <system:String x:Key="sensitiveAccent">Programları ararken aksan duyarlılığını etkinleştir.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">Bu seçenek değiştirildiğinde yeniden başlatma gerekir. Etkinleştirildiğinde, aksanlı karakterler içeren programları daha kolay bulabileceksiniz.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Yeniden Başlatma Gerekiyor</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">Aksan duyarlılığını değiştirmek, değişikliğin etkili olması için Flow Launcher'ın yeniden başlatılmasını gerektirir.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Şimdi Yeniden Başlat</system:String>
     <system:String x:Key="hideNotifyIcon">Sistem Tepsisinden Gizle</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Arama penceresine sağ tıklayarak ayarları açabilirsiniz.</system:String>
     <system:String x:Key="querySearchPrecision">Arama Hassasiyeti</system:String>

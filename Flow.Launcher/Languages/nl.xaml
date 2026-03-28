@@ -121,11 +121,6 @@
     <system:String x:Key="select">Selecteer</system:String>
     <system:String x:Key="hideOnStartup">Verberg Flow Launcher als systeem opstart</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher zoekvenster is verborgen in het systeemvak na het opstarten.</system:String>
-    <system:String x:Key="sensitiveAccent">Accentgevoeligheid inschakelen bij het zoeken naar programma's.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">Wanneer deze optie wordt gewijzigd, is een herstart vereist. Indien ingeschakeld, kunt u programma's die accenttekens bevatten gemakkelijker vinden.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Herstart vereist</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">Het wijzigen van de accentgevoeligheid vereist een herstart van Flow Launcher om effect te hebben.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Nu herstarten</system:String>
     <system:String x:Key="hideNotifyIcon">Systeemvakpictogram verbergen</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Wanneer het pictogram verborgen is in het vak, kan het instellingenmenu worden geopend door de rechtermuisknop op het zoekvenster te klikken.</system:String>
     <system:String x:Key="querySearchPrecision">Zoekopdracht nauwkeurigheid</system:String>

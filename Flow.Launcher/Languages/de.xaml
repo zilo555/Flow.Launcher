@@ -121,11 +121,6 @@
     <system:String x:Key="select">Auswählen</system:String>
     <system:String x:Key="hideOnStartup">Flow Launcher beim Start ausblenden</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher-Suchfenster wird nach dem Start in der Taskleiste ausgeblendet.</system:String>
-    <system:String x:Key="sensitiveAccent">Akzentuierung beim Suchen nach Programmen berücksichtigen.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">Wenn diese Option geändert wird, ist ein Neustart erforderlich. Wenn sie aktiviert ist, können Sie Programme, die Akzentzeichen enthalten, leichter finden.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Neustart erforderlich</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">Das Ändern der Akzentempfindlichkeit erfordert einen Neustart von Flow Launcher, um wirksam zu werden.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Jetzt neu starten</system:String>
     <system:String x:Key="hideNotifyIcon">Tray-Icon ausblenden</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Wenn das Icon in der Taskleiste ausgeblendet ist, kann das Menü Einstellungen durch einen Rechtsklick auf das Suchfenster geöffnet werden.</system:String>
     <system:String x:Key="querySearchPrecision">Suchgenauigkeit abfragen</system:String>

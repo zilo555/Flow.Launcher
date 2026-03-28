@@ -32,11 +32,7 @@
     <system:String x:Key="autoUpdates">Oppdater automatisk</system:String>
     <system:String x:Key="select">Velg</system:String>
     <system:String x:Key="hideOnStartup">Skjul Flow Launcher ved oppstart</system:String>
-    <system:String x:Key="sensitiveAccent">Aktiver følsomhet for aksenter når du søker etter programmer.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">Når dette alternativet endres, kreves en omstart. Når aktivert, vil du lettere kunne finne programmer som inneholder aksenttegn.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Omstart kreves</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">Endring av aksentfølsomhet krever en omstart av Flow Launcher for å tre i kraft.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Start på nytt nå</system:String>
+
     <!--  Setting Plugin  -->
     <system:String x:Key="plugin">Utvidelse</system:String>
     <system:String x:Key="plugins">Utvidelse</system:String>

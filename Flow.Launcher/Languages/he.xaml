@@ -121,11 +121,6 @@
     <system:String x:Key="select">בחר</system:String>
     <system:String x:Key="hideOnStartup">הסתר את Flow Launcher בהפעלת המחשב</system:String>
     <system:String x:Key="hideOnStartupToolTip">חלון החיפוש של Flow Launcher מוסתר במגש לאחר ההפעלה.</system:String>
-    <system:String x:Key="sensitiveAccent">הפעל רגישות לסימני דיאקריטיקה בעת חיפוש תוכניות.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">כאשר אפשרות זו משתנה, נדרשת הפעלה מחדש. כאשר היא מופעלת, תוכל למצוא תוכניות המכילות תווים עם סימני דיאקריטיקה בקלות רבה יותר.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">נדרשת הפעלה מחדש</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">שינוי הרגישות לסימני דיאקריטיקה דורש הפעלה מחדש של Flow Launcher כדי להיכנס לתוקף.</system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">הפעל מחדש כעת</system:String>
     <system:String x:Key="hideNotifyIcon">הסתר אייקון מגש</system:String>
     <system:String x:Key="hideNotifyIconToolTip">כאשר האייקון מוסתר מהמגש, ניתן לפתוח את תפריט ההגדרות על ידי לחיצה ימנית על חלון החיפוש.</system:String>
     <system:String x:Key="querySearchPrecision">דיוק חיפוש שאילתה</system:String>

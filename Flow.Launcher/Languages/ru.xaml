@@ -121,11 +121,6 @@
     <system:String x:Key="select">Выбор</system:String>
     <system:String x:Key="hideOnStartup">Скрыть Flow Launcher при запуске</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher search window is hidden in the tray after starting up.</system:String>
-    <system:String x:Key="sensitiveAccent">Включить чувствительность к диакритическим знакам при поиске программ.</system:String>
-    <system:String x:Key="sensitiveAccentToolTip">При изменении этой опции требуется перезагрузка. Если она включена, вам будет проще находить программы, содержащие символы с диакритическими знаками.</system:String>
-    <system:String x:Key="sensitiveAccentRestartTitle">Требуется перезагрузка</system:String>
-    <system:String x:Key="sensitiveAccentRestartMessage">Изменение чувствительности к диакритическим знакам требует перезапуска Flow Launcher для вступления в силу. </system:String>
-    <system:String x:Key="sensitiveAccentRestartButton">Перезагрузить сейчас</system:String>
     <system:String x:Key="hideNotifyIcon">Скрыть значок в трее</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Когда значок скрыт в трее, меню настройки можно открыть, щёлкнув правой кнопкой мыши на окне поиска.</system:String>
     <system:String x:Key="querySearchPrecision">Точность поиска запросов</system:String>
