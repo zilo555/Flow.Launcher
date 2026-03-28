@@ -121,6 +121,11 @@ Kliknij &quot;nie&quot;, jeśli jest już zainstalowany. Zostaniesz wtedy popros
     <system:String x:Key="select">Wybierz</system:String>
     <system:String x:Key="hideOnStartup">Uruchamiaj Flow Launcher zminimalizowany</system:String>
     <system:String x:Key="hideOnStartupToolTip">Okno wyszukiwania Flow Launcher jest ukryte w zasobniku systemowym po uruchomieniu.</system:String>
+    <system:String x:Key="sensitiveAccent">Włącz uwzględnianie znaków diakrytycznych podczas wyszukiwania programów.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Po zmianie tej opcji wymagany jest restart. Gdy jest włączona, łatwiej będzie znaleźć programy zawierające znaki akcentowane.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Wymagany restart</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Zmiana czułości na akcenty wymaga ponownego uruchomienia Flow Launcher, aby zmiany odniosły skutek.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Uruchom ponownie teraz</system:String>
     <system:String x:Key="hideNotifyIcon">Ukryj ikonę zasobnika</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Gdy ikona jest ukryta w zasobniku systemowym, menu Ustawienia można otworzyć, klikając prawym przyciskiem myszy na oknie wyszukiwania.</system:String>
     <system:String x:Key="querySearchPrecision">Precyzja wyszukiwania zapytań</system:String>

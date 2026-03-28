@@ -121,6 +121,11 @@
     <system:String x:Key="select">Chọn</system:String>
     <system:String x:Key="hideOnStartup">Ẩn Flow Launcher khi khởi động</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher sẽ ẩn trong khay hệ thống sau khi khởi động.</system:String>
+    <system:String x:Key="sensitiveAccent">Bật độ nhạy dấu khi tìm kiếm chương trình.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Khi tùy chọn này được thay đổi, cần phải khởi động lại. Khi được bật, bạn sẽ có thể tìm thấy các chương trình có chứa các ký tự có dấu dễ dàng hơn.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Yêu cầu khởi động lại</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Thay đổi độ nhạy dấu yêu cầu khởi động lại Flow Launcher để có hiệu lực.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Khởi động lại ngay</system:String>
     <system:String x:Key="hideNotifyIcon">Ẩn biểu tượng thanh trạng thái</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Khi biểu tượng bị ẩn khỏi khay, bạn có thể mở menu Cài đặt bằng cách nhấp chuột phải vào cửa sổ tìm kiếm.</system:String>
     <system:String x:Key="querySearchPrecision">Độ chính xác của tìm kiếm truy vấn</system:String>

@@ -121,6 +121,11 @@
     <system:String x:Key="select">Vybrat</system:String>
     <system:String x:Key="hideOnStartup">Skrýt Flow Launcher při spuštění</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher search window is hidden in the tray after starting up.</system:String>
+    <system:String x:Key="sensitiveAccent">Povolit citlivost na diakritiku při vyhledávání programů.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Při změně této volby je vyžadován restart. Pokud je povolena, budete moci snáze najít programy, které obsahují znaky s diakritikou.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Vyžadován restart</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Změna citlivosti na diakritiku vyžaduje pro projevení změn restartování Flow Launcheru.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Restartovat nyní</system:String>
     <system:String x:Key="hideNotifyIcon">Skrýt ikonu v systémové liště</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Pokud je ikona v oznamovací oblasti skrytá, nastavení lze otevřít kliknutím pravým tlačítkem myši na okno vyhledávání.</system:String>
     <system:String x:Key="querySearchPrecision">Přesnost vyhledávání</system:String>

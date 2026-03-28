@@ -121,6 +121,11 @@
     <system:String x:Key="select">選擇</system:String>
     <system:String x:Key="hideOnStartup">啟動時不顯示主視窗</system:String>
     <system:String x:Key="hideOnStartupToolTip">啟動後，Flow Launcher搜尋視窗會隱藏在系統匣中。</system:String>
+    <system:String x:Key="sensitiveAccent">搜尋程式時啟用重音敏感度。</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">更改此選項後需要重啟。啟用後，你將能更輕鬆地找到包含重音符號字元的程式。</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">需要重啟</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">更改重音敏感度需要重啟 Flow Launcher 才能生效。</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">立即重啟</system:String>
     <system:String x:Key="hideNotifyIcon">隱藏任務欄圖示</system:String>
     <system:String x:Key="hideNotifyIconToolTip">當圖示從系統列隱藏時，可以透過在搜尋視窗上按右鍵來開啟設定選單。</system:String>
     <system:String x:Key="querySearchPrecision">查詢搜尋精確度</system:String>

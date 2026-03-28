@@ -121,6 +121,11 @@
     <system:String x:Key="select">Seleziona</system:String>
     <system:String x:Key="hideOnStartup">Nascondi Flow Launcher all'avvio</system:String>
     <system:String x:Key="hideOnStartupToolTip">La finestra di ricerca di Flow Launcher è nascosta nelle applicazioni nascoste dopo l'avvio.</system:String>
+    <system:String x:Key="sensitiveAccent">Abilita la sensibilità agli accenti durante la ricerca di programmi.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Quando questa opzione viene modificata, è necessario un riavvio. Quando abilitata, sarai in grado di trovare più facilmente i programmi che contengono caratteri accentati.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Riavvio richiesto</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">La modifica della sensibilità agli accenti richiede il riavvio di Flow Launcher per avere effetto.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Riavvia ora</system:String>
     <system:String x:Key="hideNotifyIcon">Nascondi Icona nell'Area di Notifica</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Quando l'icona è nascosta dal menu delle icone nascoste, il menu Impostazioni può essere aperto facendo clic con il tasto destro del mouse sulla finestra di ricerca.</system:String>
     <system:String x:Key="querySearchPrecision">Precisione di ricerca delle query</system:String>

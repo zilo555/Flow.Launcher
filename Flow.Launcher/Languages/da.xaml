@@ -121,6 +121,11 @@
     <system:String x:Key="select">Vælg</system:String>
     <system:String x:Key="hideOnStartup">Skjul Flow Launcher ved opstart</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher search window is hidden in the tray after starting up.</system:String>
+    <system:String x:Key="sensitiveAccent">Aktiver følsomhed over for accenter, når der søges efter programmer.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Når denne indstilling ændres, er en genstart påkrævet. Når den er aktiveret, vil du nemmere kunne finde programmer, der indeholder accenttegn.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Genstart påkrævet</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Ændring af følsomhed over for accenter kræver en genstart af Flow Launcher for at træde i kraft.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Genstart nu</system:String>
     <system:String x:Key="hideNotifyIcon"></system:String>
     <system:String x:Key="hideNotifyIconToolTip">When the icon is hidden from the tray, the Settings menu can be opened by right-clicking on the search window.</system:String>
     <system:String x:Key="querySearchPrecision">Query Search Precision</system:String>

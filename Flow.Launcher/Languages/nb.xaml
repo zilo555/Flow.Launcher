@@ -121,6 +121,11 @@
     <system:String x:Key="select">Velg</system:String>
     <system:String x:Key="hideOnStartup">Skjul Flow Launcher ved oppstart</system:String>
     <system:String x:Key="hideOnStartupToolTip">Søkevinduet for Flow Launcher er skjult i systemstatusfeltet etter oppstart.</system:String>
+    <system:String x:Key="sensitiveAccent">Aktiver følsomhet for aksenter når du søker etter programmer.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Når dette alternativet endres, kreves en omstart. Når aktivert, vil du lettere kunne finne programmer som inneholder aksenttegn.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Omstart kreves</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Endring av aksentfølsomhet krever en omstart av Flow Launcher for å tre i kraft.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Start på nytt nå</system:String>
     <system:String x:Key="hideNotifyIcon">Skjul systemstatusfeltikon</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Når ikonet er skjult fra systemstatusfeltet, kan Innstillinger-menyen åpnes ved å høyreklikke på søkevinduet.</system:String>
     <system:String x:Key="querySearchPrecision">Presisjon for spørringssøk</system:String>

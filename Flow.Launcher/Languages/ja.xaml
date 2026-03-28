@@ -121,6 +121,11 @@
     <system:String x:Key="select">選択</system:String>
     <system:String x:Key="hideOnStartup">起動時にFlow Launcherを隠す</system:String>
     <system:String x:Key="hideOnStartupToolTip">起動後、Flow Launcher の検索ウィンドウは非表示になり、トレイに格納されます。</system:String>
+    <system:String x:Key="sensitiveAccent">プログラム検索時にアクセントを区別する。</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">このオプションを変更した後は再起動が必要です。有効にすると、アクセント記号を含むプログラムをより簡単に見つけることができるようになります。</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">再起動が必要です</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">アクセントの区別設定を変更するには、Flow Launcher の再起動が必要です。</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">今すぐ再起動</system:String>
     <system:String x:Key="hideNotifyIcon">トレイアイコンを隠す</system:String>
     <system:String x:Key="hideNotifyIconToolTip">トレイアイコンが非表示になっているときは、検索ウィンドウを右クリックすることで設定メニューを開くことができます。</system:String>
     <system:String x:Key="querySearchPrecision">クエリ検索精度</system:String>

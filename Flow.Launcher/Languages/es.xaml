@@ -121,6 +121,11 @@
     <system:String x:Key="select">Seleccionar</system:String>
     <system:String x:Key="hideOnStartup">Ocultar Flow Launcher al inicio</system:String>
     <system:String x:Key="hideOnStartupToolTip">La ventana de búsqueda de Flow Launcher se oculta en la bandeja del sistema tras el arranque.</system:String>
+    <system:String x:Key="sensitiveAccent">Activar la distinción de acentos al buscar programas.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Cuando se cambia esta opción, se requiere un reinicio. Cuando está activada, podrá encontrar programas que contengan caracteres acentuados más fácilmente.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Reinicio requerido</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Cambiar la sensibilidad de los acentos requiere un reinicio de Flow Launcher para que surta efecto.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Reiniciar ahora</system:String>
     <system:String x:Key="hideNotifyIcon">Ocultar icono en la bandeja del sistema</system:String>
     <system:String x:Key="hideNotifyIconToolTip">Cuando el icono está oculto en la bandeja del sistema, se puede abrir el menú de configuración haciendo clic con el botón derecho en la ventana de búsqueda.</system:String>
     <system:String x:Key="querySearchPrecision">Precisión de búsqueda en consultas</system:String>

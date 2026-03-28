@@ -121,6 +121,11 @@
     <system:String x:Key="select">选择</system:String>
     <system:String x:Key="hideOnStartup">系统启动时不显示主窗口</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher 启动后搜索窗口隐藏在托盘中。</system:String>
+    <system:String x:Key="sensitiveAccent">搜索程序时启用重音敏感度。</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">更改此选项后需要重启。启用后，你将能更轻松地找到包含重音符号字符的程序。</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">需要重启</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">更改重音敏感度需要重启 Flow Launcher 才能生效。</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">立即重启</system:String>
     <system:String x:Key="hideNotifyIcon">隐藏任务栏图标</system:String>
     <system:String x:Key="hideNotifyIconToolTip">任务栏图标被隐藏时，右键点击搜索窗口即可打开设置菜单。</system:String>
     <system:String x:Key="querySearchPrecision">查询搜索精度</system:String>

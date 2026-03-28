@@ -121,6 +121,11 @@
     <system:String x:Key="select">Select</system:String>
     <system:String x:Key="hideOnStartup">Hide Flow Launcher on startup</system:String>
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher search window is hidden in the tray after starting up.</system:String>
+    <system:String x:Key="sensitiveAccent">Омогући осетљивост на акценте приликом претраге програма.</system:String>
+    <system:String x:Key="sensitiveAccentToolTip">Када се ова опција промени, неопходно је поновно покретање. Када је омогућено, моћи ћете лакше да пронађете програме који садрже акцентоване карактере.</system:String>
+    <system:String x:Key="sensitiveAccentRestartTitle">Потребно је поновно покретање</system:String>
+    <system:String x:Key="sensitiveAccentRestartMessage">Промена осетљивости на акценте захтева поновно покретање Flow Launcher-а да би ступила на снагу.</system:String>
+    <system:String x:Key="sensitiveAccentRestartButton">Поново покрени сада</system:String>
     <system:String x:Key="hideNotifyIcon">Hide tray icon</system:String>
     <system:String x:Key="hideNotifyIconToolTip">When the icon is hidden from the tray, the Settings menu can be opened by right-clicking on the search window.</system:String>
     <system:String x:Key="querySearchPrecision">Query Search Precision</system:String>
