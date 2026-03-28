@@ -114,7 +114,7 @@
     <system:String x:Key="nodeFilePath">Caminho do Node.js</system:String>
     <system:String x:Key="selectNodeExecutable">Selecione o executável do Node.js</system:String>
     <system:String x:Key="selectPythonExecutable">Por favor, selecione pythonw.exe</system:String>
-    <system:String x:Key="typingStartEn">Sempre Começar Digitando em Modo Inglês</system:String> 
+    <system:String x:Key="typingStartEn">Sempre Começar Digitando em Modo Inglês</system:String>
     <system:String x:Key="typingStartEnTooltip">Temporariamente altere seu método de entrada para o Modo Inglês ao ativar o Flow.</system:String>
     <system:String x:Key="autoUpdates">Atualizar Automaticamente</system:String>
     <system:String x:Key="autoUpdatesTooltip">Automatically check and update the app when available</system:String>
