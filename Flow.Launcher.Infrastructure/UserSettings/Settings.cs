@@ -359,15 +359,15 @@ namespace Flow.Launcher.Infrastructure.UserSettings
             }
         }
 
-        private bool _sensitiveAccents = false;
-        public bool SensitiveAccents
+        private bool _IgnoreAccents = false;
+        public bool IgnoreAccents
         {
-            get => _sensitiveAccents;
+            get => _IgnoreAccents;
             set
             {
-                if (_sensitiveAccents != value)
+                if (_IgnoreAccents != value)
                 {
-                    _sensitiveAccents = value;
+                    _IgnoreAccents = value;
                     OnPropertyChanged();
                 }
             }

@@ -89,8 +89,8 @@ namespace Flow.Launcher.Infrastructure
             var fullStringToCompareWithoutCase = opt.IgnoreCase ? stringToCompare.ToLower() : stringToCompare;
             var queryWithoutCase = opt.IgnoreCase ? query.ToLower() : query;
 
-            var fullStringToCompare = _settings.SensitiveAccents ? fullStringToCompareAndNormalize : fullStringToCompareWithoutCase;
-            var queryToCompare = _settings.SensitiveAccents ? queryWithoutCaseAndNormalize : queryWithoutCase;
+            var fullStringToCompare = _settings.IgnoreAccents ? fullStringToCompareAndNormalize : fullStringToCompareWithoutCase;
+            var queryToCompare = _settings.IgnoreAccents ? queryWithoutCaseAndNormalize : queryWithoutCase;
 
             var querySubstrings = queryToCompare.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int currentQuerySubstringIndex = 0;

@@ -23,7 +23,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     private readonly Portable _portable;
     private readonly Internationalization _translater;
     private readonly IPublicAPI _publicAPIInstance;
-    private readonly bool _initialSensitiveAccents;
+    private readonly bool _initialIgnoreAccents;
     public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater, IPublicAPI publicApiInstance)
     {
         Settings = settings;
@@ -31,7 +31,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
         _portable = portable;
         _translater = translater;
         _publicAPIInstance = publicApiInstance;
-        _initialSensitiveAccents = settings.SensitiveAccents;
+        _initialIgnoreAccents = settings.IgnoreAccents;
         UpdateEnumDropdownLocalizations();
     }
 
@@ -176,7 +176,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     public class DialogJumpWindowPositionData : DropdownDataGeneric<DialogJumpWindowPositions> { }
     public class DialogJumpResultBehaviourData : DropdownDataGeneric<DialogJumpResultBehaviours> { }
     public class DialogJumpFileResultBehaviourData : DropdownDataGeneric<DialogJumpFileResultBehaviours> { }
-    public bool SensitiveAccentsRestartRequired => Settings.SensitiveAccents != _initialSensitiveAccents;
+    public bool IgnoreAccentsRestartRequired => Settings.IgnoreAccents != _initialIgnoreAccents;
 
     public List<DialogJumpWindowPositionData> DialogJumpWindowPositions { get; } =
         DropdownDataGeneric<DialogJumpWindowPositions>.GetValues<DialogJumpWindowPositionData>("DialogJumpWindowPosition");
@@ -201,16 +201,16 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     }
 
 
-    public bool SensitiveAccents
+    public bool IgnoreAccents
     {
-        get => Settings.SensitiveAccents;
+        get => Settings.IgnoreAccents;
         set
         {
-            if(Settings.SensitiveAccents != value)
+            if(Settings.IgnoreAccents != value)
             {
-                Settings.SensitiveAccents = value;
+                Settings.IgnoreAccents = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(SensitiveAccentsRestartRequired));
+                OnPropertyChanged(nameof(IgnoreAccentsRestartRequired));
             }
         }
     }

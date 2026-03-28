@@ -92,23 +92,23 @@
                     OnContent="{DynamicResource enable}" />
             </ui:SettingsCard>
             <ui:SettingsCard
-                Description="{DynamicResource sensitiveAccentToolTip}"
-                Header="{DynamicResource sensitiveAccent}">
+                Description="{DynamicResource ignoreAccents ToolTip}"
+                Header="{DynamicResource ignoreAccents}">
                 <ui:ToggleSwitch
-                    IsOn="{Binding SensitiveAccents}"
+                    IsOn="{Binding IgnoreAccents}"
                     OffContent="{DynamicResource disable}"
                     OnContent="{DynamicResource enable}" />
             </ui:SettingsCard>
             <ui:InfoBar
-                Title="{DynamicResource sensitiveAccentRestartTitle}"
+                Title="{DynamicResource ignoreAccentsRestartTitle}"
                 Margin="0 4 0 0"
                 IsClosable="False"
                 IsOpen="True"
-                Message="{DynamicResource sensitiveAccentRestartMessage}"
+                Message="{DynamicResource ignoreAccentsRestartMessage}"
                 Severity="Warning"
-                Visibility="{Binding SensitiveAccentsRestartRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                Visibility="{Binding IgnoreAccentsRestartRequired, Converter={StaticResource BoolToVisibilityConverter}}">
                 <ui:InfoBar.ActionButton>
-                    <Button Command="{Binding RestartAppCommand}" Content="{DynamicResource sensitiveAccentRestartButton}" />
+                    <Button Command="{Binding RestartAppCommand}" Content="{DynamicResource ignoreAccentsRestartButton}" />
                 </ui:InfoBar.ActionButton>
             </ui:InfoBar>
             <ui:SettingsCard
