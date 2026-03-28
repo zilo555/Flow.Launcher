@@ -22,13 +22,16 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     private readonly Updater _updater;
     private readonly Portable _portable;
     private readonly Internationalization _translater;
-
-    public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater)
+    private readonly IPublicAPI _publicAPIInstance;
+    private readonly bool _initialSensitiveAccents;
+    public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater, IPublicAPI publicApiInstance)
     {
         Settings = settings;
         _updater = updater;
         _portable = portable;
         _translater = translater;
+        _publicAPIInstance = publicApiInstance;
+        _initialSensitiveAccents = settings.SensitiveAccents;
         UpdateEnumDropdownLocalizations();
     }
 
@@ -173,6 +176,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     public class DialogJumpWindowPositionData : DropdownDataGeneric<DialogJumpWindowPositions> { }
     public class DialogJumpResultBehaviourData : DropdownDataGeneric<DialogJumpResultBehaviours> { }
     public class DialogJumpFileResultBehaviourData : DropdownDataGeneric<DialogJumpFileResultBehaviours> { }
+    public bool SensitiveAccentsRestartRequired => Settings.SensitiveAccents != _initialSensitiveAccents;
 
     public List<DialogJumpWindowPositionData> DialogJumpWindowPositions { get; } =
         DropdownDataGeneric<DialogJumpWindowPositions>.GetValues<DialogJumpWindowPositionData>("DialogJumpWindowPosition");
@@ -196,15 +200,17 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
         }
     }
 
+
     public bool SensitiveAccents
     {
         get => Settings.SensitiveAccents;
         set
         {
-            if (Settings.SensitiveAccents != value)
+            if(Settings.SensitiveAccents != value)
             {
                 Settings.SensitiveAccents = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SensitiveAccentsRestartRequired));
             }
         }
     }
@@ -362,6 +368,9 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
         };
     }
 
+    [RelayCommand]
+    private void RestartApp()
+        => _publicAPIInstance.RestartApp();
     private void UpdateApp()
     {
         _ = _updater.UpdateAppAsync(false);
