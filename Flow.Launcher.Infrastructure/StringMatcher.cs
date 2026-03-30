@@ -86,14 +86,21 @@ namespace Flow.Launcher.Infrastructure
             int acronymsTotalCount = 0;
             int acronymsMatched = 0;
 
-            var fullStringToCompareAndNormalize = opt.IgnoreCase ? Normalize(stringToCompare) : stringToCompare;
-            var queryWithoutCaseAndNormalize = opt.IgnoreCase ? Normalize(query) : query;
+            var fullStringToCompare = stringToCompare;
+            var queryToCompare = query;
 
-            var fullStringToCompareWithoutCase = opt.IgnoreCase ? stringToCompare.ToLower() : stringToCompare;
-            var queryWithoutCase = opt.IgnoreCase ? query.ToLower() : query;
+            if (_settings.IgnoreAccents)
+            {
+                fullStringToCompare = Normalize(fullStringToCompare);
+                queryToCompare = Normalize(queryToCompare);
+            }
 
-            var fullStringToCompare = _settings.IgnoreAccents ? fullStringToCompareAndNormalize : fullStringToCompareWithoutCase;
-            var queryToCompare = _settings.IgnoreAccents ? queryWithoutCaseAndNormalize : queryWithoutCase;
+            if (opt.IgnoreCase)
+            {
+                fullStringToCompare = fullStringToCompare.ToLower();
+                queryToCompare = queryToCompare.ToLower();
+            }
+
 
             var querySubstrings = queryToCompare.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int currentQuerySubstringIndex = 0;
