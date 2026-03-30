@@ -22,15 +22,13 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     private readonly Updater _updater;
     private readonly Portable _portable;
     private readonly Internationalization _translater;
-    private readonly IPublicAPI _publicAPIInstance;
     private readonly bool _initialIgnoreAccents;
-    public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater, IPublicAPI publicApiInstance)
+    public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater)
     {
         Settings = settings;
         _updater = updater;
         _portable = portable;
         _translater = translater;
-        _publicAPIInstance = publicApiInstance;
         _initialIgnoreAccents = settings.IgnoreAccents;
         UpdateEnumDropdownLocalizations();
     }
@@ -370,7 +368,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
 
     [RelayCommand]
     private void RestartApp()
-        => _publicAPIInstance.RestartApp();
+        => App.API.RestartApp();
     private void UpdateApp()
     {
         _ = _updater.UpdateAppAsync(false);
