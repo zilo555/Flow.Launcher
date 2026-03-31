@@ -125,7 +125,7 @@
     <system:String x:Key="hideOnStartupToolTip">Flow Launcher search window is hidden in the tray after starting up.</system:String>
     <system:String x:Key="hideNotifyIcon">Hide tray icon</system:String>
     <system:String x:Key="hideNotifyIconToolTip">When the icon is hidden from the tray, the Settings menu can be opened by right-clicking on the search window.</system:String>
-    <system:String x:Key="ignoreAccents">Enable accent sensitivity when searching for programs.</system:String>
+    <system:String x:Key="ignoreAccents">Ignore accents when searching for programs.</system:String>
     <system:String x:Key="ignoreAccentsToolTip">When this option is changed, a restart is required. When enabled, you will be able to find programs that contain accented characters more easily.</system:String>
     <system:String x:Key="ignoreAccentsRestartTitle">Restart Required</system:String>
     <system:String x:Key="ignoreAccentsRestartMessage">Changing accent sensitivity requires a restart of Flow Launcher to take effect.</system:String>
