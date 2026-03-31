@@ -369,6 +369,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     [RelayCommand]
     private void RestartApp()
         => App.API.RestartApp();
+
     private void UpdateApp()
     {
         _ = _updater.UpdateAppAsync(false);

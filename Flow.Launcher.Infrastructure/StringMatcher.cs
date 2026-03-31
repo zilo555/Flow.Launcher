@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Infrastructure.UserSettings;
 using Flow.Launcher.Plugin.SharedModels;
@@ -21,16 +19,13 @@ namespace Flow.Launcher.Infrastructure
         public StringMatcher(IAlphabet alphabet, Settings settings)
         {
             _alphabet = alphabet;
-            UserSettingSearchPrecision = settings.QuerySearchPrecision;
             _settings = settings;
+            UserSettingSearchPrecision = _settings.QuerySearchPrecision;
         }
 
         // This is a workaround to allow unit tests to set the instance
-        public StringMatcher(IAlphabet alphabet)
+        public StringMatcher(IAlphabet alphabet) : this(alphabet, new Settings())
         {
-            _alphabet = alphabet;
-            _settings = new Settings();
-            UserSettingSearchPrecision = _settings.QuerySearchPrecision;
         }
 
         public static MatchResult FuzzySearch(string query, string stringToCompare)
@@ -101,8 +96,7 @@ namespace Flow.Launcher.Infrastructure
                 queryToCompare = queryToCompare.ToLower();
             }
 
-
-            var querySubstrings = queryToCompare.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var querySubstrings = queryToCompare.Split([' '], StringSplitOptions.RemoveEmptyEntries);
             int currentQuerySubstringIndex = 0;
             var currentQuerySubstring = querySubstrings[currentQuerySubstringIndex];
             var currentQuerySubstringCharacterIndex = 0;
@@ -180,8 +174,8 @@ namespace Flow.Launcher.Infrastructure
                     // in order to do so we need to verify all previous chars are part of the pattern
                     var startIndexToVerify = compareStringIndex - currentQuerySubstringCharacterIndex;
 
-                    if (AllPreviousCharsMatched(startIndexToVerify, currentQuerySubstringCharacterIndex,
-                            fullStringToCompare, currentQuerySubstring))
+                    if (AllPreviousCharsMatched(startIndexToVerify, currentQuerySubstringCharacterIndex, 
+                        fullStringToCompare, currentQuerySubstring))
                     {
                         matchFoundInPreviousLoop = true;
 
