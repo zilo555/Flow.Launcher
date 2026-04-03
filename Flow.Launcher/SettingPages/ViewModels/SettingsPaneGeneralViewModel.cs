@@ -22,14 +22,12 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     private readonly Updater _updater;
     private readonly Portable _portable;
     private readonly Internationalization _translater;
-    private readonly bool _initialIgnoreAccents;
     public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater)
     {
         Settings = settings;
         _updater = updater;
         _portable = portable;
         _translater = translater;
-        _initialIgnoreAccents = settings.IgnoreAccents;
         UpdateEnumDropdownLocalizations();
     }
 
@@ -174,7 +172,6 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     public class DialogJumpWindowPositionData : DropdownDataGeneric<DialogJumpWindowPositions> { }
     public class DialogJumpResultBehaviourData : DropdownDataGeneric<DialogJumpResultBehaviours> { }
     public class DialogJumpFileResultBehaviourData : DropdownDataGeneric<DialogJumpFileResultBehaviours> { }
-    public bool IgnoreAccentsRestartRequired => Settings.IgnoreAccents != _initialIgnoreAccents;
 
     public List<DialogJumpWindowPositionData> DialogJumpWindowPositions { get; } =
         DropdownDataGeneric<DialogJumpWindowPositions>.GetValues<DialogJumpWindowPositionData>("DialogJumpWindowPosition");
@@ -208,7 +205,6 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
             {
                 Settings.IgnoreAccents = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IgnoreAccentsRestartRequired));
             }
         }
     }
@@ -365,11 +361,6 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
             _ => string.Empty
         };
     }
-
-    [RelayCommand]
-    private void RestartApp()
-        => App.API.RestartApp();
-
     private void UpdateApp()
     {
         _ = _updater.UpdateAppAsync(false);

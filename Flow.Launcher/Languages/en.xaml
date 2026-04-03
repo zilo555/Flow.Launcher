@@ -127,9 +127,6 @@
     <system:String x:Key="hideNotifyIconToolTip">When the icon is hidden from the tray, the Settings menu can be opened by right-clicking on the search window.</system:String>
     <system:String x:Key="ignoreAccents">Ignore accents when searching results</system:String>
     <system:String x:Key="ignoreAccentsToolTip">When this option is changed, a restart is required. When enabled, you will be able to find results that contain accented characters more easily.</system:String>
-    <system:String x:Key="ignoreAccentsRestartTitle">Restart Required</system:String>
-    <system:String x:Key="ignoreAccentsRestartMessage">Changing accent sensitivity requires a restart of Flow Launcher to take effect.</system:String>
-    <system:String x:Key="ignoreAccentsRestartButton">Restart Now</system:String>
     <system:String x:Key="querySearchPrecision">Query Search Precision</system:String>
     <system:String x:Key="querySearchPrecisionToolTip">Changes minimum match score required for results.</system:String>
     <system:String x:Key="SearchPrecisionNone">None</system:String>

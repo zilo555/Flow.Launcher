@@ -569,18 +569,6 @@
                     OffContent="{DynamicResource disable}"
                     OnContent="{DynamicResource enable}" />
             </ui:SettingsCard>
-            <ui:InfoBar
-                Title="{DynamicResource ignoreAccentsRestartTitle}"
-                Margin="0 4 0 0"
-                IsClosable="False"
-                IsOpen="True"
-                Message="{DynamicResource ignoreAccentsRestartMessage}"
-                Severity="Warning"
-                Visibility="{Binding IgnoreAccentsRestartRequired, Converter={StaticResource BoolToVisibilityConverter}}">
-                <ui:InfoBar.ActionButton>
-                    <Button Command="{Binding RestartAppCommand}" Content="{DynamicResource ignoreAccentsRestartButton}" />
-                </ui:InfoBar.ActionButton>
-            </ui:InfoBar>
 
             <ui:SettingsCard Margin="0 14 0 0" Header="{DynamicResource language}">
                 <ui:SettingsCard.HeaderIcon>
