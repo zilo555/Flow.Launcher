@@ -21,6 +21,16 @@ namespace Flow.Launcher.Infrastructure
             _alphabet = alphabet;
             _settings = settings;
             UserSettingSearchPrecision = _settings.QuerySearchPrecision;
+
+            _settings.PropertyChanged += (sender, e) =>
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(Settings.QuerySearchPrecision):
+                        UserSettingSearchPrecision = _settings.QuerySearchPrecision;
+                        break;
+                }
+            };
         }
 
         // This is a workaround to allow unit tests to set the instance

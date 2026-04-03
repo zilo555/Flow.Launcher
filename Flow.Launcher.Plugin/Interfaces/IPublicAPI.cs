@@ -637,5 +637,10 @@ namespace Flow.Launcher.Plugin
         /// </summary>
         /// <returns></returns>
         string GetLogDirectory();
+
+        /// <summary>
+        /// Invoked when the behavior of string matcher has changed which can effect the result of <see cref="MatchResult"/>.
+        /// </summary>
+        event EventHandler StringMatcherBehaviorChanged;
     }
 }

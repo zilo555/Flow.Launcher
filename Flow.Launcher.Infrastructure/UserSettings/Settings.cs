@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Infrastructure.Hotkey;
 using Flow.Launcher.Infrastructure.Logger;
 using Flow.Launcher.Infrastructure.Storage;
@@ -16,7 +16,8 @@ namespace Flow.Launcher.Infrastructure.UserSettings
     public class Settings : BaseModel, IHotkeySettings
     {
         private FlowLauncherJsonStorage<Settings> _storage;
-        private StringMatcher _stringMatcher = null;
+
+        public event EventHandler StringMatcherBehaviorChanged;
 
         public void SetStorage(FlowLauncherJsonStorage<Settings> storage)
         {
@@ -25,9 +26,6 @@ namespace Flow.Launcher.Infrastructure.UserSettings
 
         public void Initialize()
         {
-            // Initialize dependency injection instances after Ioc.Default is created
-            _stringMatcher = Ioc.Default.GetRequiredService<StringMatcher>();
-
             // Initialize application resources after application is created
             var settingWindowFont = new FontFamily(SettingWindowFont);
             Application.Current.Resources["SettingWindowFont"] = settingWindowFont;
@@ -417,8 +415,7 @@ namespace Flow.Launcher.Infrastructure.UserSettings
                 if (_querySearchPrecision != value)
                 {
                     _querySearchPrecision = value;
-                    if (_stringMatcher != null)
-                        _stringMatcher.UserSettingSearchPrecision = value;
+                    OnPropertyChanged();
                 }
             }
         }
