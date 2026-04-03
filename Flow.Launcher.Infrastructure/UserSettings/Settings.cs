@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Media;
@@ -30,6 +31,22 @@ namespace Flow.Launcher.Infrastructure.UserSettings
             var settingWindowFont = new FontFamily(SettingWindowFont);
             Application.Current.Resources["SettingWindowFont"] = settingWindowFont;
             Application.Current.Resources["ContentControlThemeFontFamily"] = settingWindowFont;
+
+            PropertyChanged += Settings_PropertyChanged;
+        }
+
+        private void Settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(QuerySearchPrecision):
+                case nameof(ShouldUsePinyin):
+                case nameof(UseDoublePinyin):
+                case nameof(DoublePinyinSchema):
+                case nameof(IgnoreAccents):
+                    StringMatcherBehaviorChanged?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
         }
 
         public void Save()
@@ -357,20 +374,6 @@ namespace Flow.Launcher.Infrastructure.UserSettings
             }
         }
 
-        private bool _IgnoreAccents = false;
-        public bool IgnoreAccents
-        {
-            get => _IgnoreAccents;
-            set
-            {
-                if (_IgnoreAccents != value)
-                {
-                    _IgnoreAccents = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         private bool _useDoublePinyin = false;
         public bool UseDoublePinyin
         {
@@ -415,6 +418,20 @@ namespace Flow.Launcher.Infrastructure.UserSettings
                 if (_querySearchPrecision != value)
                 {
                     _querySearchPrecision = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool _IgnoreAccents = false;
+        public bool IgnoreAccents
+        {
+            get => _IgnoreAccents;
+            set
+            {
+                if (_IgnoreAccents != value)
+                {
+                    _IgnoreAccents = value;
                     OnPropertyChanged();
                 }
             }

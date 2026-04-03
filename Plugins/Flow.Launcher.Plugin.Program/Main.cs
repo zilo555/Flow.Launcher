@@ -327,11 +327,20 @@ namespace Flow.Launcher.Plugin.Program
                 WatchProgramUpdate();
             }
 
+            Context.API.StringMatcherBehaviorChanged += API_StringMatcherBehaviorChanged;
+
             static void WatchProgramUpdate()
             {
                 Win32.WatchProgramUpdate(_settings);
                 _ = UWPPackage.WatchPackageChangeAsync();
             }
+        }
+
+        private void API_StringMatcherBehaviorChanged(object sender, EventArgs e)
+        {
+            // Since cache stores the search results based on the old string matcher behavior,
+            // we need to reset the cache when the string matcher behavior changes
+            ResetCache();
         }
 
         public static async Task IndexWin32ProgramsAsync(bool resetCache)
@@ -558,6 +567,7 @@ namespace Flow.Launcher.Plugin.Program
 
         public void Dispose()
         {
+            Context.API.StringMatcherBehaviorChanged -= API_StringMatcherBehaviorChanged;
             Win32.Dispose();
         }
     }
