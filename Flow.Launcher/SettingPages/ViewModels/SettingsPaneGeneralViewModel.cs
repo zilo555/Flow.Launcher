@@ -22,6 +22,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
     private readonly Updater _updater;
     private readonly Portable _portable;
     private readonly Internationalization _translater;
+
     public SettingsPaneGeneralViewModel(Settings settings, Updater updater, Portable portable, Internationalization translater)
     {
         Settings = settings;
@@ -361,6 +362,7 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
             _ => string.Empty
         };
     }
+
     private void UpdateApp()
     {
         _ = _updater.UpdateAppAsync(false);
