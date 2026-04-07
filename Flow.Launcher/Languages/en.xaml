@@ -144,6 +144,7 @@
     <system:String x:Key="DoublePinyinSchemasXingKongJianDao">Xing Kong Jian Dao</system:String>
     <system:String x:Key="DoublePinyinSchemasDaNiu">Da Niu</system:String>
     <system:String x:Key="DoublePinyinSchemasXiaoLang">Xiao Lang</system:String>
+    <system:String x:Key="HelpUsTranslateFlow">Help us translate Flow</system:String>
 
     <system:String x:Key="AlwaysPreview">Always Preview</system:String>
     <system:String x:Key="AlwaysPreviewToolTip">Always open preview panel when Flow activates. Press {0} to toggle preview.</system:String>
