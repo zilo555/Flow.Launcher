@@ -184,8 +184,8 @@ namespace Flow.Launcher.Infrastructure
                     // in order to do so we need to verify all previous chars are part of the pattern
                     var startIndexToVerify = compareStringIndex - currentQuerySubstringCharacterIndex;
 
-                    if (AllPreviousCharsMatched(startIndexToVerify, currentQuerySubstringCharacterIndex, 
-                        fullStringToCompare, currentQuerySubstring))
+                    if (AllPreviousCharsMatched(startIndexToVerify, currentQuerySubstringCharacterIndex,
+                            fullStringToCompare, currentQuerySubstring))
                     {
                         matchFoundInPreviousLoop = true;
 
@@ -259,20 +259,98 @@ namespace Flow.Launcher.Infrastructure
 
         private static readonly Dictionary<char, char> AccentMap = new()
         {
-            ['á'] = 'a', ['à'] = 'a', ['ã'] = 'a', ['â'] = 'a', ['ä'] = 'a', ['å'] = 'a',
-            ['é'] = 'e', ['è'] = 'e', ['ê'] = 'e', ['ë'] = 'e',
-            ['í'] = 'i', ['ì'] = 'i', ['î'] = 'i', ['ï'] = 'i',
-            ['ó'] = 'o', ['ò'] = 'o', ['õ'] = 'o', ['ô'] = 'o', ['ö'] = 'o',
-            ['ú'] = 'u', ['ù'] = 'u', ['û'] = 'u', ['ü'] = 'u',
+            ['á'] = 'a',
+            ['à'] = 'a',
+            ['ã'] = 'a',
+            ['â'] = 'a',
+            ['ä'] = 'a',
+            ['å'] = 'a',
+            ['ā'] = 'a',
+            ['ă'] = 'a',
+            ['ą'] = 'a',
+            ['é'] = 'e',
+            ['è'] = 'e',
+            ['ê'] = 'e',
+            ['ë'] = 'e',
+            ['ē'] = 'e',
+            ['ĕ'] = 'e',
+            ['ė'] = 'e',
+            ['ę'] = 'e',
+            ['ě'] = 'e',
+            ['í'] = 'i',
+            ['ì'] = 'i',
+            ['î'] = 'i',
+            ['ï'] = 'i',
+            ['ī'] = 'i',
+            ['ĭ'] = 'i',
+            ['į'] = 'i',
+            ['ı'] = 'i',
+            ['ó'] = 'o',
+            ['ò'] = 'o',
+            ['õ'] = 'o',
+            ['ô'] = 'o',
+            ['ö'] = 'o',
+            ['ø'] = 'o',
+            ['ō'] = 'o',
+            ['ŏ'] = 'o',
+            ['ő'] = 'o',
+            ['ú'] = 'u',
+            ['ù'] = 'u',
+            ['û'] = 'u',
+            ['ü'] = 'u',
+            ['ū'] = 'u',
+            ['ŭ'] = 'u',
+            ['ů'] = 'u',
+            ['ű'] = 'u',
+            ['ų'] = 'u',
             ['ç'] = 'c',
+            ['ć'] = 'c',
+            ['ĉ'] = 'c',
+            ['ċ'] = 'c',
+            ['č'] = 'c',
             ['ñ'] = 'n',
-            ['ý'] = 'y', ['ÿ'] = 'y'
+            ['ń'] = 'n',
+            ['ņ'] = 'n',
+            ['ň'] = 'n',
+            ['ŋ'] = 'n',
+            ['ý'] = 'y',
+            ['ÿ'] = 'y',
+            ['ŷ'] = 'y',
+            ['ś'] = 's',
+            ['ŝ'] = 's',
+            ['ş'] = 's',
+            ['š'] = 's',
+            ['ß'] = 's',
+            ['ź'] = 'z',
+            ['ż'] = 'z',
+            ['ž'] = 'z',
+            ['ł'] = 'l',
+            ['ď'] = 'd',
+            ['đ'] = 'd',
+            ['ĝ'] = 'g',
+            ['ğ'] = 'g',
+            ['ġ'] = 'g',
+            ['ģ'] = 'g',
+            ['ĥ'] = 'h',
+            ['ħ'] = 'h',
+            ['ĵ'] = 'j',
+            ['ķ'] = 'k',
+            ['ŕ'] = 'r',
+            ['ř'] = 'r',
+            ['ţ'] = 't',
+            ['ť'] = 't',
+            ['ŧ'] = 't',
+            ['æ'] = 'a',
+            ['œ'] = 'o'
         };
+
         public static string Normalize(string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
             char[] arrayFromPool = null;
-            Span<char> buffer = value.Length <= 512 ? stackalloc char[value.Length] : (arrayFromPool = ArrayPool<char>.Shared.Rent(value.Length));
+            Span<char> buffer = value.Length <= 512
+                ? stackalloc char[value.Length]
+                : (arrayFromPool = ArrayPool<char>.Shared.Rent(value.Length));
             try
             {
                 for (int i = 0; i < value.Length; i++)
@@ -280,6 +358,7 @@ namespace Flow.Launcher.Infrastructure
                     var c = char.ToLowerInvariant(value[i]);
                     buffer[i] = AccentMap.TryGetValue(c, out var mapped) ? mapped : c;
                 }
+
                 return new string(buffer.Slice(0, value.Length));
             }
             finally
@@ -288,6 +367,7 @@ namespace Flow.Launcher.Infrastructure
                     ArrayPool<char>.Shared.Return(arrayFromPool);
             }
         }
+
         private static bool IsAcronym(string stringToCompare, int compareStringIndex)
         {
             if (IsAcronymChar(stringToCompare, compareStringIndex) ||
