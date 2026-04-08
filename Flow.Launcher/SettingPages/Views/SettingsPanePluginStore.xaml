@@ -22,7 +22,7 @@
             Filter="PluginStoreCollectionView_OnFilter"
             Source="{Binding ExternalPlugins}">
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Category" />
+                <PropertyGroupDescription PropertyName="DefaultCategory" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </ui:Page.Resources>
