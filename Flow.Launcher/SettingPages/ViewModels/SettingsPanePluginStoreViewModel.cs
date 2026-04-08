@@ -12,6 +12,30 @@ namespace Flow.Launcher.SettingPages.ViewModels;
 
 public partial class SettingsPanePluginStoreViewModel : BaseModel
 {
+    public class SortModeData : DropdownDataGeneric<PluginStoreSortMode> { }
+
+    public List<SortModeData> SortModes { get; } =
+        DropdownDataGeneric<PluginStoreSortMode>.GetValues<SortModeData>("PluginStoreSortMode");
+
+    public SettingsPanePluginStoreViewModel()
+    {
+        UpdateEnumDropdownLocalizations();
+    }
+
+    private PluginStoreSortMode _selectedSortMode = PluginStoreSortMode.Default;
+    public PluginStoreSortMode SelectedSortMode
+    {
+        get => _selectedSortMode;
+        set
+        {
+            if (_selectedSortMode != value)
+            {
+                _selectedSortMode = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     private string filterText = string.Empty;
     public string FilterText
     {
@@ -168,4 +192,18 @@ public partial class SettingsPanePluginStoreViewModel : BaseModel
             App.API.FuzzySearch(FilterText, plugin.Name).IsSearchPrecisionScoreMet() ||
             App.API.FuzzySearch(FilterText, plugin.Description).IsSearchPrecisionScoreMet();
     }
+
+    private void UpdateEnumDropdownLocalizations()
+    {
+        DropdownDataGeneric<PluginStoreSortMode>.UpdateLabels(SortModes);
+    }
+
+}
+
+public enum PluginStoreSortMode
+{
+    Default,
+    Name,
+    ReleaseDate,
+    UpdatedDate
 }
