@@ -464,7 +464,11 @@ namespace Flow.Launcher
                 catch (Exception e)
                 {
                     var tabOrWindow = browserInfo.OpenInTab ? "tab" : "window";
-                    LogException(ClassName, $"Failed to open URL in browser {tabOrWindow}: {path}, {inPrivate ?? browserInfo.EnablePrivate}, {browserInfo.PrivateArg}, {browserInfo.ExtraArgs}", e);
+                    string includesExtraArgs = string.IsNullOrWhiteSpace(browserInfo.ExtraArgs) 
+                        ? "" 
+                        : ", [including omitted Extra Args]";
+                        
+                    LogException(ClassName, $"Failed to open URL in browser {tabOrWindow}: {path}, {inPrivate ?? browserInfo.EnablePrivate}, {browserInfo.PrivateArg}{includesExtraArgs}", e);
                     ShowMsgError(
                         Localize.errorTitle(),
                         Localize.browserOpenError()
