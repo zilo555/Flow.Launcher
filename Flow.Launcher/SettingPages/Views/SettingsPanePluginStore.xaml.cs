@@ -97,9 +97,9 @@ public partial class SettingsPanePluginStore
         {
             groupDescriptions.Add(new PropertyGroupDescription(nameof(PluginStoreItemViewModel.DefaultCategory)));
         }
-
         // Otherwise we only split by installed or not
-        else{
+        else
+        {
             groupDescriptions.Add(new PropertyGroupDescription(nameof(PluginStoreItemViewModel.InstallCategory)));
         }
     }
