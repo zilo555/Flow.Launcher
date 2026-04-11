@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Infrastructure.UserSettings;
 using Flow.Launcher.Plugin.SharedModels;
@@ -91,18 +92,16 @@ namespace Flow.Launcher.Infrastructure
             int acronymsTotalCount = 0;
             int acronymsMatched = 0;
 
-            var fullStringToCompare = stringToCompare;
             var queryToCompare = query;
+            bool ignoreAccents = _settings.IgnoreAccents;
+            bool ignoreCase = opt.IgnoreCase;
 
-            if (_settings.IgnoreAccents)
+            if (ignoreAccents)
             {
-                fullStringToCompare = Normalize(fullStringToCompare);
                 queryToCompare = Normalize(queryToCompare);
             }
-
-            if (opt.IgnoreCase)
+            else if (ignoreCase)
             {
-                fullStringToCompare = fullStringToCompare.ToLower();
                 queryToCompare = queryToCompare.ToLower();
             }
 
@@ -122,7 +121,7 @@ namespace Flow.Launcher.Infrastructure
             List<int> spaceIndices = new List<int>();
 
             for (var compareStringIndex = 0;
-                 compareStringIndex < fullStringToCompare.Length;
+                 compareStringIndex < stringToCompare.Length;
                  compareStringIndex++)
             {
                 // If acronyms matching successfully finished, this gets the remaining not matched acronyms for score calculation
@@ -137,15 +136,25 @@ namespace Flow.Launcher.Infrastructure
                     currentAcronymQueryIndex >= query.Length && allQuerySubstringsMatched)
                     break;
 
+                char compareChar = stringToCompare[compareStringIndex];
+                if (ignoreAccents)
+                {
+                    compareChar = NormalizeChar(compareChar);
+                }
+                else if (ignoreCase)
+                {
+                    compareChar = char.ToLower(compareChar);
+                }
+
                 // To maintain a list of indices which correspond to spaces in the string to compare
                 // To populate the list only for the first query substring
-                if (fullStringToCompare[compareStringIndex] == ' ' && currentQuerySubstringIndex == 0)
+                if (compareChar == ' ' && currentQuerySubstringIndex == 0)
                     spaceIndices.Add(compareStringIndex);
 
                 // Acronym Match
                 if (IsAcronym(stringToCompare, compareStringIndex))
                 {
-                    if (fullStringToCompare[compareStringIndex] ==
+                    if (compareChar ==
                         queryToCompare[currentAcronymQueryIndex])
                     {
                         acronymMatchData.Add(compareStringIndex);
@@ -158,7 +167,7 @@ namespace Flow.Launcher.Infrastructure
                 if (IsAcronymCount(stringToCompare, compareStringIndex))
                     acronymsTotalCount++;
 
-                if (allQuerySubstringsMatched || fullStringToCompare[compareStringIndex] !=
+                if (allQuerySubstringsMatched || compareChar !=
                     currentQuerySubstring[currentQuerySubstringCharacterIndex])
                 {
                     matchFoundInPreviousLoop = false;
@@ -185,7 +194,7 @@ namespace Flow.Launcher.Infrastructure
                     var startIndexToVerify = compareStringIndex - currentQuerySubstringCharacterIndex;
 
                     if (AllPreviousCharsMatched(startIndexToVerify, currentQuerySubstringCharacterIndex,
-                            fullStringToCompare, currentQuerySubstring))
+                            stringToCompare, currentQuerySubstring, ignoreAccents, ignoreCase))
                     {
                         matchFoundInPreviousLoop = true;
 
@@ -344,20 +353,50 @@ namespace Flow.Launcher.Infrastructure
             ['œ'] = 'o'
         };
 
+        private const char AccentRangeStart = '\u00DF';
+        private const char AccentRangeEnd = '\u017D';
+        private static readonly char[] AccentLookup = BuildAccentLookup();
+
+        private static char[] BuildAccentLookup()
+        {
+            var lookup = new char[AccentRangeEnd - AccentRangeStart + 1];
+            foreach (var (key, value) in AccentMap)
+                lookup[key - AccentRangeStart] = value;
+            return lookup;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static char NormalizeChar(char c)
+        {
+            c = char.ToLowerInvariant(c);
+            if (c >= AccentRangeStart && c <= AccentRangeEnd)
+            {
+                var mapped = AccentLookup[c - AccentRangeStart];
+                if (mapped != 0) return mapped;
+            }
+            return c;
+        }
+
         public static string Normalize(string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
+
+            int firstChange = -1;
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (NormalizeChar(value[i]) != value[i]) { firstChange = i; break; }
+            }
+            if (firstChange < 0) return value;
+
             char[] arrayFromPool = null;
             Span<char> buffer = value.Length <= 512
                 ? stackalloc char[value.Length]
                 : (arrayFromPool = ArrayPool<char>.Shared.Rent(value.Length));
             try
             {
-                for (int i = 0; i < value.Length; i++)
-                {
-                    var c = char.ToLowerInvariant(value[i]);
-                    buffer[i] = AccentMap.TryGetValue(c, out var mapped) ? mapped : c;
-                }
+                value.AsSpan(0, firstChange).CopyTo(buffer);
+                for (int i = firstChange; i < value.Length; i++)
+                    buffer[i] = NormalizeChar(value[i]);
 
                 return new string(buffer.Slice(0, value.Length));
             }
@@ -415,19 +454,19 @@ namespace Flow.Launcher.Infrastructure
         }
 
         private static bool AllPreviousCharsMatched(int startIndexToVerify, int currentQuerySubstringCharacterIndex,
-            string fullStringToCompare, string currentQuerySubstring)
+            string stringToCompare, string currentQuerySubstring, bool ignoreAccents, bool ignoreCase)
         {
-            var allMatch = true;
             for (int indexToCheck = 0; indexToCheck < currentQuerySubstringCharacterIndex; indexToCheck++)
             {
-                if (fullStringToCompare[startIndexToVerify + indexToCheck] !=
-                    currentQuerySubstring[indexToCheck])
-                {
-                    allMatch = false;
-                }
+                char c = stringToCompare[startIndexToVerify + indexToCheck];
+                if (ignoreAccents) c = NormalizeChar(c);
+                else if (ignoreCase) c = char.ToLower(c);
+
+                if (c != currentQuerySubstring[indexToCheck])
+                    return false;
             }
 
-            return allMatch;
+            return true;
         }
 
         private static List<int> GetUpdatedIndexList(int startIndexToVerify, int currentQuerySubstringCharacterIndex,
