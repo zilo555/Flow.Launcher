@@ -52,7 +52,7 @@ namespace Flow.Launcher.Plugin.SharedCommands
             var browser = string.IsNullOrEmpty(browserExecutableName) ? "chrome" : browserPath;
 
             // Internet Explorer will open url in new browser window, and does not take the --new-window parameter
-            var browserArguements = (browserExecutableName == "iexplore.exe" ? "" : "--new-window ")
+            var browserArguments = (browserExecutableName == "iexplore.exe" ? "" : "--new-window ")
                                    + (inPrivate ? $"{privateArg} " : "")
                                    + (string.IsNullOrWhiteSpace(extraArgs) ? "" : $"{extraArgs} ")
                                    + url;
@@ -60,7 +60,7 @@ namespace Flow.Launcher.Plugin.SharedCommands
             var psi = new ProcessStartInfo
             {
                 FileName = browser,
-                Arguments = browserArguements,
+                Arguments = browserArguments,
                 UseShellExecute = true
             };
 
