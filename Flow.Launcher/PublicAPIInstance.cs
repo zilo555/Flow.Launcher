@@ -454,17 +454,20 @@ namespace Flow.Launcher
                 {
                     if (browserInfo.OpenInTab)
                     {
-                        uri.AbsoluteUri.OpenInBrowserTab(path, inPrivate ?? browserInfo.EnablePrivate, browserInfo.PrivateArg);
+                        uri.AbsoluteUri.OpenInBrowserTab(path, inPrivate ?? browserInfo.EnablePrivate, browserInfo.PrivateArg, browserInfo.ExtraArgs);
                     }
                     else
                     {
-                        uri.AbsoluteUri.OpenInBrowserWindow(path, inPrivate ?? browserInfo.EnablePrivate, browserInfo.PrivateArg);
+                        uri.AbsoluteUri.OpenInBrowserWindow(path, inPrivate ?? browserInfo.EnablePrivate, browserInfo.PrivateArg, browserInfo.ExtraArgs);
                     }
                 }
                 catch (Exception e)
                 {
                     var tabOrWindow = browserInfo.OpenInTab ? "tab" : "window";
-                    LogException(ClassName, $"Failed to open URL in browser {tabOrWindow}: {path}, {inPrivate ?? browserInfo.EnablePrivate}, {browserInfo.PrivateArg}", e);
+                    var includesExtraArgs = string.IsNullOrWhiteSpace(browserInfo.ExtraArgs) 
+                        ? "" 
+                        : ", [including omitted Extra Args]";
+                    LogException(ClassName, $"Failed to open URL in browser {tabOrWindow}: {path}, {inPrivate ?? browserInfo.EnablePrivate}, {browserInfo.PrivateArg}{includesExtraArgs}", e);
                     ShowMsgError(
                         Localize.errorTitle(),
                         Localize.browserOpenError()
