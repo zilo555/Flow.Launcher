@@ -354,7 +354,7 @@ namespace Flow.Launcher.Infrastructure
         };
 
         private const char AccentRangeStart = '\u00DF';
-        private const char AccentRangeEnd = '\u017D';
+        private const char AccentRangeEnd   = '\u017E';
         private static readonly char[] AccentLookup = BuildAccentLookup();
 
         private static char[] BuildAccentLookup()
