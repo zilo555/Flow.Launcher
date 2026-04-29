@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Security.Cryptography;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -35,18 +36,30 @@ namespace Flow.Launcher.Infrastructure.Image
                     normalized = converted;
                 }
 
-                // Prepare final buffer (should be HashSize x HashSize)
-                var bpp = normalized.Format.BitsPerPixel;
-                if (bpp < 1)
+                // Since we forced Pbgra32, we know it is exactly 4 bytes per pixel.
+                const int bytesPerPixel = 4;
+
+                var stride = normalized.PixelWidth * bytesPerPixel;
+                var bufferSize = stride * normalized.PixelHeight;
+
+                if (bufferSize <= 0)
                     return null;
 
-                var bytesPerPixel = (bpp + 7) / 8;
-                var stride = normalized.PixelWidth * bytesPerPixel;
-                var pixels = new byte[stride * normalized.PixelHeight];
-                normalized.CopyPixels(pixels, stride, 0);
+                // Use ArrayPool to prevent Large Object Heap (LOH) allocations for big images
+                var rentedPixelBuffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 
-                var hashBytes = SHA1.HashData(pixels);
-                return Convert.ToBase64String(hashBytes);
+                try
+                {
+                    normalized.CopyPixels(rentedPixelBuffer, stride, 0);
+
+                    // Slice the rented array to the exact buffer size (Rented arrays are often larger than the requested size)
+                    var hashBytes = SHA1.HashData(rentedPixelBuffer.AsSpan(0, bufferSize));
+                    return Convert.ToBase64String(hashBytes);
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(rentedPixelBuffer);
+                }
             }
             catch
             {
