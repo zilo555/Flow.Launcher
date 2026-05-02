@@ -98,7 +98,7 @@ namespace Flow.Launcher.Infrastructure
 
             if (ignoreAccents)
             {
-                queryToCompare = StringNormalize.Normalize(queryToCompare);
+                queryToCompare = DiacriticsNormalizer.Normalize(queryToCompare);
             }
             else if (ignoreCase)
             {
@@ -139,7 +139,7 @@ namespace Flow.Launcher.Infrastructure
                 char compareChar = stringToCompare[compareStringIndex];
                 if (ignoreAccents)
                 {
-                    compareChar = StringNormalize.NormalizeChar(compareChar);
+                    compareChar = DiacriticsNormalizer.NormalizeChar(compareChar);
                 }
                 else if (ignoreCase)
                 {
@@ -318,8 +318,14 @@ namespace Flow.Launcher.Infrastructure
             for (int indexToCheck = 0; indexToCheck < currentQuerySubstringCharacterIndex; indexToCheck++)
             {
                 char c = stringToCompare[startIndexToVerify + indexToCheck];
-                if (ignoreAccents) c = StringNormalize.NormalizeChar(c);
-                else if (ignoreCase) c = char.ToLower(c);
+                if (ignoreAccents)
+                {
+                    c = DiacriticsNormalizer.NormalizeChar(c);
+                }
+                else if (ignoreCase)
+                {
+                    c = char.ToLower(c);
+                }
 
                 if (c != currentQuerySubstring[indexToCheck])
                     return false;

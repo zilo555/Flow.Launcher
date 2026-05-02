@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Flow.Launcher.Infrastructure;
 
-public static class StringNormalize
+public static class DiacriticsNormalizer
 {
     private static readonly Dictionary<char, char> AccentMap = new()
     {
