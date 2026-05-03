@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,10 +22,6 @@ namespace Flow.Launcher.Infrastructure
             _alphabet = alphabet;
             _settings = settings;
             UserSettingSearchPrecision = _settings.QuerySearchPrecision;
-
-        // This is a workaround to allow unit tests to set the instance
-        public StringMatcher(IAlphabet alphabet) : this(alphabet, new Settings())
-        {
         }
 
         public static MatchResult FuzzySearch(string query, string stringToCompare)
