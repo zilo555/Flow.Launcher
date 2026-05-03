@@ -648,7 +648,16 @@ namespace Flow.Launcher.Plugin
         string GetLogDirectory();
 
         /// <summary>
-        /// Invoked when the behavior of string matcher has changed which can effect the result of <see cref="MatchResult"/>.
+        /// Raised when StringMatcher behavior or options change.
+        /// This can include changes such as case sensitivity, diacritic handling, or
+        /// other matcher configuration that affect how queries are compared to
+        /// candidate strings. Such changes can alter the results produced by
+        /// <see cref="FuzzySearch(string,string)"/> and the content of any existing
+        /// <see cref="MatchResult"/> values.
+        ///
+        /// Plugins that cache match results or ranking information should subscribe
+        /// to this event so they can invalidate and recompute those caches when the
+        /// string matcher behavior changes.
         /// </summary>
         event EventHandler StringMatcherBehaviorChanged;
     }

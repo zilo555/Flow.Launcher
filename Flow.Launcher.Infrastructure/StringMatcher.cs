@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Infrastructure.UserSettings;
 using Flow.Launcher.Plugin.SharedModels;
@@ -137,8 +135,7 @@ namespace Flow.Launcher.Infrastructure
                 // Acronym Match
                 if (IsAcronym(stringToCompare, compareStringIndex))
                 {
-                    if (compareChar ==
-                        queryToCompare[currentAcronymQueryIndex])
+                    if (compareChar == queryToCompare[currentAcronymQueryIndex])
                     {
                         acronymMatchData.Add(compareStringIndex);
                         acronymsMatched++;
