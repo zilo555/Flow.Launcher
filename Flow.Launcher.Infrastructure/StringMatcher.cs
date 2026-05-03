@@ -105,9 +105,7 @@ namespace Flow.Launcher.Infrastructure
             var indexList = new List<int>();
             List<int> spaceIndices = new List<int>();
 
-            for (var compareStringIndex = 0;
-                 compareStringIndex < stringToCompare.Length;
-                 compareStringIndex++)
+            for (var compareStringIndex = 0; compareStringIndex < stringToCompare.Length; compareStringIndex++)
             {
                 // If acronyms matching successfully finished, this gets the remaining not matched acronyms for score calculation
                 if (currentAcronymQueryIndex >= query.Length && acronymsMatched == query.Length)
@@ -224,8 +222,7 @@ namespace Flow.Launcher.Infrastructure
 
                 if (acronymScore >= (int)UserSettingSearchPrecision)
                 {
-                    acronymMatchData = acronymMatchData.Select(x => translationMapping?.MapToOriginalIndex(x) ?? x)
-                        .Distinct().ToList();
+                    acronymMatchData = acronymMatchData.Select(x => translationMapping?.MapToOriginalIndex(x) ?? x).Distinct().ToList();
                     return new MatchResult(true, UserSettingSearchPrecision, acronymMatchData, acronymScore);
                 }
             }
@@ -238,23 +235,19 @@ namespace Flow.Launcher.Infrastructure
                 // firstMatchIndex - nearestSpaceIndex - 1 is to set the firstIndex as the index of the first matched char
                 // preceded by a space e.g. 'world' matching 'hello world' firstIndex would be 0 not 6 
                 // giving more weight than 'we or donald' by allowing the distance calculation to treat the starting position at after the space.
-                var score = CalculateSearchScore(query, stringToCompare, firstMatchIndex - nearestSpaceIndex - 1,
-                    spaceIndices,
+                var score = CalculateSearchScore(query, stringToCompare, firstMatchIndex - nearestSpaceIndex - 1, spaceIndices,
                     lastMatchIndex - firstMatchIndex, allSubstringsContainedInCompareString);
 
-                var resultList = indexList.Select(x => translationMapping?.MapToOriginalIndex(x) ?? x).Distinct()
-                    .ToList();
+                var resultList = indexList.Select(x => translationMapping?.MapToOriginalIndex(x) ?? x).Distinct().ToList();
                 return new MatchResult(true, UserSettingSearchPrecision, resultList, score);
             }
 
             return new MatchResult(false, UserSettingSearchPrecision);
         }
 
-
         private static bool IsAcronym(string stringToCompare, int compareStringIndex)
         {
-            if (IsAcronymChar(stringToCompare, compareStringIndex) ||
-                IsAcronymNumber(stringToCompare, compareStringIndex))
+            if (IsAcronymChar(stringToCompare, compareStringIndex) || IsAcronymNumber(stringToCompare, compareStringIndex))
                 return true;
 
             return false;
@@ -342,8 +335,7 @@ namespace Flow.Launcher.Infrastructure
             return currentQuerySubstringIndex >= querySubstringsLength;
         }
 
-        private static int CalculateSearchScore(string query, string stringToCompare, int firstIndex,
-            List<int> spaceIndices, int matchLen,
+        private static int CalculateSearchScore(string query, string stringToCompare, int firstIndex, List<int> spaceIndices, int matchLen,
             bool allSubstringsContainedInCompareString)
         {
             // A match found near the beginning of a string is scored more than a match found near the end
