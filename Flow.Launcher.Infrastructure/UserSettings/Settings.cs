@@ -425,6 +425,7 @@ namespace Flow.Launcher.Infrastructure.UserSettings
                     _querySearchPrecision = value;
                     if (_stringMatcher != null)
                         _stringMatcher.UserSettingSearchPrecision = value;
+                        OnPropertyChanged();
                 }
             }
         }
