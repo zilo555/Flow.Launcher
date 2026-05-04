@@ -252,6 +252,9 @@ public partial class SettingsPaneGeneralViewModel : BaseModel
             if (_translater.PromptShouldUsePinyin(value))
                 ShouldUsePinyin = true;
 
+            if (_translater.PromptShouldIgnoreAccents(value))
+                IgnoreAccents = true;
+
             UpdateEnumDropdownLocalizations();
         }
     }
