@@ -370,5 +370,20 @@ namespace Flow.Launcher.Test
                    Score: {score}
                    Desired Score: {desiredScore}");
         }
+
+        [TestCase(true, "camera", "câmera", true)]
+        [TestCase(false, "camera", "câmera", false)]
+        public void WhenGivenIgnoreAccentsSetting_ShouldControlAccentInsensitiveMatching(
+            bool ignoreAccents, string queryString, string compareString, bool shouldMatch)
+        {
+            var settings = new Settings { IgnoreAccents = ignoreAccents };
+            var matcher = new StringMatcher(alphabet, settings)
+            {
+                UserSettingSearchPrecision = SearchPrecisionScore.Regular
+            };
+
+            var result = matcher.FuzzyMatch(queryString, compareString);
+            ClassicAssert.AreEqual(shouldMatch, result.IsSearchPrecisionScoreMet());
+        }
     }
 }
