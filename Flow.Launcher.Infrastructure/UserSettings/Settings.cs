@@ -424,21 +424,23 @@ namespace Flow.Launcher.Infrastructure.UserSettings
                 {
                     _querySearchPrecision = value;
                     if (_stringMatcher != null)
+                    {
                         _stringMatcher.UserSettingSearchPrecision = value;
                         OnPropertyChanged();
+                    }
                 }
             }
         }
 
-        private bool _IgnoreAccents = false;
+        private bool _ignoreAccents = false;
         public bool IgnoreAccents
         {
-            get => _IgnoreAccents;
+            get => _ignoreAccents;
             set
             {
-                if (_IgnoreAccents != value)
+                if (_ignoreAccents != value)
                 {
-                    _IgnoreAccents = value;
+                    _ignoreAccents = value;
                     OnPropertyChanged();
                 }
             }
