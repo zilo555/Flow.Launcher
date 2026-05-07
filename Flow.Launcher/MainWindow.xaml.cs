@@ -710,7 +710,8 @@ namespace Flow.Launcher
             {
                 if (_settings.WMPInstalled)
                 {
-                    if (_animationSoundWMP == null){
+                    if (_animationSoundWMP == null)
+                    {
                         return;
                     }
 
@@ -720,7 +721,8 @@ namespace Flow.Launcher
                 }
                 else
                 {
-                    if (_animationSoundWPF == null){
+                    if (_animationSoundWPF == null)
+                    {
                         return;
                     }
 
