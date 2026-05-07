@@ -710,12 +710,20 @@ namespace Flow.Launcher
             {
                 if (_settings.WMPInstalled)
                 {
+                    if (_animationSoundWMP == null){
+                        return;
+                    }
+
                     _animationSoundWMP.Position = TimeSpan.Zero;
                     _animationSoundWMP.Volume = _settings.SoundVolume / 100.0;
                     _animationSoundWMP.Play();
                 }
                 else
                 {
+                    if (_animationSoundWPF == null){
+                        return;
+                    }
+
                     _animationSoundWPF.Play();
                 }
             }
