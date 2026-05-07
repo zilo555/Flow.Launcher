@@ -1533,9 +1533,9 @@ namespace Flow.Launcher
                 {
                     _hwndSource?.Dispose();
                     _notifyIcon?.Dispose();
+                    UnregisterSoundEffectsEvent();
                     DisposeSoundEffects();
                     _viewModel.ActualApplicationThemeChanged -= ViewModel_ActualApplicationThemeChanged;
-                    UnregisterSoundEffectsEvent();
                 }
 
                 _disposed = true;
