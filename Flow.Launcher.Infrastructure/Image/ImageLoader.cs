@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Flow.Launcher.Infrastructure.Logger;
@@ -257,7 +259,24 @@ namespace Flow.Launcher.Infrastructure.Image
                 else
                 {
                     type = ImageType.File;
-                    image = GetThumbnail(path, ThumbnailOptions.None, loadFullImage ? FullIconSize : SmallIconSize);
+                    var size = loadFullImage ? FullIconSize : SmallIconSize;
+                    try
+                    {
+                        image = GetThumbnail(path, ThumbnailOptions.None, size);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Log.Info(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
+
+                        image = ExtractAssociatedIconOrNull(path, size);
+                        if (image == null)
+                        {
+                            Log.Info(ClassName, $"ExtractAssociatedIcon returned no icon for {path}. Using missing image.");
+                            image = MissingImage;
+                            path = Constant.MissingImgIcon;
+                            type = ImageType.Error;
+                        }
+                    }
                 }
             }
             else
@@ -282,6 +301,29 @@ namespace Flow.Launcher.Infrastructure.Image
                 size,
                 size,
                 option);
+        }
+
+        private static BitmapSource ExtractAssociatedIconOrNull(string path, int size)
+        {
+            try
+            {
+                using var icon = System.Drawing.Icon.ExtractAssociatedIcon(path);
+                if (icon == null)
+                {
+                    return null;
+                }
+
+                var image = Imaging.CreateBitmapSourceFromHIcon(
+                    icon.Handle,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromWidthAndHeight(size, size));
+                image.Freeze();
+                return image;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static bool CacheContainImage(string path, bool loadFullImage = false)
