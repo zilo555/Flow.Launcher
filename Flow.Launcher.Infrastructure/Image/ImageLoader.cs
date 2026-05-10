@@ -200,7 +200,7 @@ namespace Flow.Launcher.Infrastructure.Image
         private static ImageResult GetThumbnailResult(ref string path, bool loadFullImage = false)
         {
             if (Directory.Exists(path))
-                return GetDirectoryThumbnailResult(path);
+                return GetDirectoryThumbnailResult(ref path);
 
             if (!File.Exists(path))
                 return GetMissingThumbnailResult(ref path);
@@ -232,7 +232,7 @@ namespace Flow.Launcher.Infrastructure.Image
             return CreateImageResult(MissingImage, ImageType.Error);
         }
 
-        private static ImageResult GetDirectoryThumbnailResult(string path)
+        private static ImageResult GetDirectoryThumbnailResult(ref string path)
         {
             try
             {
@@ -247,6 +247,7 @@ namespace Flow.Launcher.Infrastructure.Image
             catch (System.Exception ex)
             {
                 Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
+                path = Constant.FolderIcon;
                 return CreateImageResult(FolderImage, ImageType.Folder);
             }
         }
