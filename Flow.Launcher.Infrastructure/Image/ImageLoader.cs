@@ -200,126 +200,134 @@ namespace Flow.Launcher.Infrastructure.Image
 
         private static ImageResult GetThumbnailResult(ref string path, bool loadFullImage = false)
         {
-            ImageSource image;
-            ImageType type = ImageType.Error;
-
             if (Directory.Exists(path))
-            {
-                try
-                {
-                    /* Directories can also have thumbnails instead of shell icons.
-                    * Generating thumbnails for a bunch of folder results while scrolling
-                    * could have a big impact on performance and Flow.Launcher responsibility.
-                    * - Solution: just load the icon
-                    */
-                    type = ImageType.Folder;
-                    image = GetThumbnail(path, ThumbnailOptions.IconOnly);
-                }
-                catch (System.Exception ex)
-                {
-                    Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
-                    type = ImageType.Folder;
-                    image = FolderImage;
-                }
-                
-            }
-            else if (File.Exists(path))
-            {
-                var extension = Path.GetExtension(path).ToLower();
-                if (ImageExtensions.Contains(extension))
-                {
-                    type = ImageType.ImageFile;
-                    if (loadFullImage)
-                    {
-                        try
-                        {
-                            image = LoadBitmapImageScaleToFitWithin(path, FullImageSize);
-                            type = ImageType.FullImageFile;
-                        }
-                        catch (NotSupportedException ex)
-                        {
-                            image = Image;
-                            type = ImageType.Error;
-                            Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex.Message}", ex);
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            /* Although the documentation for GetImage on MSDN indicates that
-                             * if a thumbnail is available it will return one, this has proved to not
-                             * be the case in many situations while testing.
-                             * - Solution: explicitly pass the ThumbnailOnly flag
-                             */
-                            image = GetThumbnail(path, ThumbnailOptions.ThumbnailOnly);
-                        }
-                        catch (System.Exception ex)
-                        {
-                            Log.Info(ClassName, $"Failed to get shell thumbnail for image file {path}: {ex.Message}\nTrying bitmap fallback.");
+                return GetDirectoryThumbnailResult(path);
 
-                            try
-                            {
-                                image = LoadBitmapImageScaleToFitWithin(path, SmallIconSize);
-                            }
-                            catch (System.Exception ex2)
-                            {
-                                image = Image;
-                                type = ImageType.Error;
-                                Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex2.Message}", ex2);
-                            }
-                        }
-                    }
-                }
-                else if (extension == SvgExtension)
-                {
-                    try
-                    {
-                        image = LoadSvgImage(path, loadFullImage);
-                        type = ImageType.FullImageFile;
-                    }
-                    catch (System.Exception ex)
-                    {
-                        image = Image;
-                        type = ImageType.Error;
-                        Log.Exception(ClassName, $"Failed to load SVG image from path {path}: {ex.Message}", ex);
-                    }
-                }
-                else
-                {
-                    type = ImageType.File;
-                    var size = loadFullImage ? FullIconSize : SmallIconSize;
-                    try
-                    {
-                        image = GetThumbnail(path, ThumbnailOptions.None, size);
-                    }
-                    catch (System.Exception ex)
-                    {
-                        Log.Info(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
+            if (!File.Exists(path))
+                return GetMissingThumbnailResult(ref path);
 
-                        image = ExtractAssociatedIconOrNull(path, size);
-                        if (image == null)
-                        {
-                            Log.Info(ClassName, $"ExtractAssociatedIcon returned no icon for {path}. Using missing image.");
-                            image = MissingImage;
-                            path = Constant.MissingImgIcon;
-                            type = ImageType.Error;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                image = MissingImage;
-                path = Constant.MissingImgIcon;
-            }
+            var extension = Path.GetExtension(path).ToLower();
 
-            if (type != ImageType.Error)
+            if (ImageExtensions.Contains(extension))
+                return GetImageFileThumbnailResult(path, loadFullImage);
+
+            if (extension == SvgExtension)
+                return GetSvgFileThumbnailResult(path, loadFullImage);
+
+            return GetFileThumbnailResult(ref path, loadFullImage);
+        }
+
+        private static ImageResult CreateImageResult(ImageSource image, ImageType type)
+        {
+            if (type != ImageType.Error && !image.IsFrozen)
             {
                 image.Freeze();
             }
 
             return new ImageResult(image, type);
+        }
+
+        private static ImageResult GetMissingThumbnailResult(ref string path)
+        {
+            path = Constant.MissingImgIcon;
+            return CreateImageResult(MissingImage, ImageType.Error);
+        }
+
+        private static ImageResult GetDirectoryThumbnailResult(string path)
+        {
+            try
+            {
+                /* Directories can also have thumbnails instead of shell icons.
+                 * Generating thumbnails for a bunch of folder results while scrolling
+                 * could have a big impact on performance and Flow.Launcher responsibility.
+                 * - Solution: just load the icon
+                 */
+                var image = GetThumbnail(path, ThumbnailOptions.IconOnly);
+                return CreateImageResult(image, ImageType.Folder);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
+                return CreateImageResult(FolderImage, ImageType.Folder);
+            }
+        }
+
+        private static ImageResult GetImageFileThumbnailResult(string path, bool loadFullImage)
+        {
+            if (loadFullImage)
+            {
+                try
+                {
+                    var image = LoadBitmapImageScaleToFitWithin(path, FullImageSize);
+                    return CreateImageResult(image, ImageType.FullImageFile);
+                }
+                catch (NotSupportedException ex)
+                {
+                    Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex.Message}", ex);
+                    return CreateImageResult(Image, ImageType.Error);
+                }
+            }
+
+            try
+            {
+                /* Although the documentation for GetImage on MSDN indicates that
+                 * if a thumbnail is available it will return one, this has proved to not
+                 * be the case in many situations while testing.
+                 * - Solution: explicitly pass the ThumbnailOnly flag
+                 */
+                var image = GetThumbnail(path, ThumbnailOptions.ThumbnailOnly);
+                return CreateImageResult(image, ImageType.ImageFile);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Info(ClassName, $"Failed to get shell thumbnail for image file {path}: {ex.Message}\nTrying bitmap fallback.");
+
+                try
+                {
+                    var image = LoadBitmapImageScaleToFitWithin(path, SmallIconSize);
+                    return CreateImageResult(image, ImageType.ImageFile);
+                }
+                catch (System.Exception ex2)
+                {
+                    Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex2.Message}", ex2);
+                    return CreateImageResult(Image, ImageType.Error);
+                }
+            }
+        }
+
+        private static ImageResult GetSvgFileThumbnailResult(string path, bool loadFullImage)
+        {
+            try
+            {
+                var image = LoadSvgImage(path, loadFullImage);
+                return CreateImageResult(image, ImageType.FullImageFile);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Exception(ClassName, $"Failed to load SVG image from path {path}: {ex.Message}", ex);
+                return CreateImageResult(Image, ImageType.Error);
+            }
+        }
+
+        private static ImageResult GetFileThumbnailResult(ref string path, bool loadFullImage)
+        {
+            var size = loadFullImage ? FullIconSize : SmallIconSize;
+            try
+            {
+                var image = GetThumbnail(path, ThumbnailOptions.None, size);
+                return CreateImageResult(image, ImageType.File);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Info(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
+
+                var image = ExtractAssociatedIconOrNull(path, size);
+                if (image != null)
+                    return CreateImageResult(image, ImageType.File);
+
+                Log.Info(ClassName, $"ExtractAssociatedIcon returned no icon for {path}. Using missing image.");
+                return GetMissingThumbnailResult(ref path);
+            }
         }
 
         private static BitmapSource GetThumbnail(string path, ThumbnailOptions option = ThumbnailOptions.ThumbnailOnly,
