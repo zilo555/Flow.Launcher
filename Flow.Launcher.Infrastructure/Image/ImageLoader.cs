@@ -222,7 +222,7 @@ namespace Flow.Launcher.Infrastructure.Image
                     {
                         try
                         {
-                            image = LoadFullImage(path);
+                            image = LoadBitmapImageScaleToFitWithin(path, FullImageSize);
                             type = ImageType.FullImageFile;
                         }
                         catch (NotSupportedException ex)
@@ -369,17 +369,17 @@ namespace Flow.Launcher.Infrastructure.Image
             return img;
         }
 
-        private static BitmapImage LoadFullImage(string path)
+        private static BitmapImage LoadBitmapImageScaleToFitWithin(string path, int maxSize)
         {
             BitmapImage image = LoadBitmapImage(path);
 
-            if (image.PixelWidth > FullImageSize)
+            if (image.PixelWidth > maxSize)
             {
-                BitmapImage resizedWidth = LoadBitmapImage(path, decodePixelWidth: FullImageSize);
+                BitmapImage resizedWidth = LoadBitmapImage(path, decodePixelWidth: maxSize);
 
-                if (resizedWidth.PixelHeight > FullImageSize)
+                if (resizedWidth.PixelHeight > maxSize)
                 {
-                    BitmapImage resizedHeight = LoadBitmapImage(path, decodePixelHeight: FullImageSize);
+                    BitmapImage resizedHeight = LoadBitmapImage(path, decodePixelHeight: maxSize);
                     return resizedHeight;
                 }
 
