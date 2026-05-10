@@ -234,12 +234,30 @@ namespace Flow.Launcher.Infrastructure.Image
                     }
                     else
                     {
-                        /* Although the documentation for GetImage on MSDN indicates that
-                         * if a thumbnail is available it will return one, this has proved to not
-                         * be the case in many situations while testing.
-                         * - Solution: explicitly pass the ThumbnailOnly flag
-                         */
-                        image = GetThumbnail(path, ThumbnailOptions.ThumbnailOnly);
+                        try
+                        {
+                            /* Although the documentation for GetImage on MSDN indicates that
+                             * if a thumbnail is available it will return one, this has proved to not
+                             * be the case in many situations while testing.
+                             * - Solution: explicitly pass the ThumbnailOnly flag
+                             */
+                            image = GetThumbnail(path, ThumbnailOptions.ThumbnailOnly);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            Log.Info(ClassName, $"Failed to get shell thumbnail for image file {path}: {ex.Message}\nTrying bitmap fallback.");
+
+                            try
+                            {
+                                image = LoadBitmapImageScaleToFitWithin(path, SmallIconSize);
+                            }
+                            catch (System.Exception ex2)
+                            {
+                                image = Image;
+                                type = ImageType.Error;
+                                Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex2.Message}", ex2);
+                            }
+                        }
                     }
                 }
                 else if (extension == SvgExtension)
