@@ -371,38 +371,43 @@ namespace Flow.Launcher.Infrastructure.Image
 
         private static BitmapImage LoadFullImage(string path)
         {
-            BitmapImage image = new BitmapImage();
-            image.BeginInit();
-            image.CacheOption = BitmapCacheOption.OnLoad;
-            image.UriSource = new Uri(path);
-            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-            image.EndInit();
+            BitmapImage image = LoadBitmapImage(path);
 
             if (image.PixelWidth > FullImageSize)
             {
-                BitmapImage resizedWidth = new BitmapImage();
-                resizedWidth.BeginInit();
-                resizedWidth.CacheOption = BitmapCacheOption.OnLoad;
-                resizedWidth.UriSource = new Uri(path);
-                resizedWidth.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                resizedWidth.DecodePixelWidth = FullImageSize;
-                resizedWidth.EndInit();
+                BitmapImage resizedWidth = LoadBitmapImage(path, decodePixelWidth: FullImageSize);
 
                 if (resizedWidth.PixelHeight > FullImageSize)
                 {
-                    BitmapImage resizedHeight = new BitmapImage();
-                    resizedHeight.BeginInit();
-                    resizedHeight.CacheOption = BitmapCacheOption.OnLoad;
-                    resizedHeight.UriSource = new Uri(path);
-                    resizedHeight.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
-                    resizedHeight.DecodePixelHeight = FullImageSize;
-                    resizedHeight.EndInit();
+                    BitmapImage resizedHeight = LoadBitmapImage(path, decodePixelHeight: FullImageSize);
                     return resizedHeight;
                 }
 
                 return resizedWidth;
             }
 
+            return image;
+        }
+
+        private static BitmapImage LoadBitmapImage(string path, int? decodePixelWidth = null, int? decodePixelHeight = null)
+        {
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(path);
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+
+            if (decodePixelWidth.HasValue)
+            {
+                image.DecodePixelWidth = decodePixelWidth.Value;
+            }
+
+            if (decodePixelHeight.HasValue)
+            {
+                image.DecodePixelHeight = decodePixelHeight.Value;
+            }
+
+            image.EndInit();
             return image;
         }
 
