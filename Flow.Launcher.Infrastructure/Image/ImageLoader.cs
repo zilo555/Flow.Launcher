@@ -29,6 +29,7 @@ namespace Flow.Launcher.Infrastructure.Image
         public static ImageSource Image => ImageCache[Constant.ImageIcon, false];
         public static ImageSource MissingImage => ImageCache[Constant.MissingImgIcon, false];
         public static ImageSource LoadingImage => ImageCache[Constant.LoadingImgIcon, false];
+        public static ImageSource FolderImage => ImageCache[Constant.FolderIcon, false];
         public const int SmallIconSize = 64;
         public const int FullIconSize = 256;
         public const int FullImageSize = 320;
@@ -48,7 +49,7 @@ namespace Flow.Launcher.Infrastructure.Image
 
                 ImageCache.Initialize(usage);
 
-                foreach (var icon in new[] { Constant.DefaultIcon, Constant.ImageIcon, Constant.MissingImgIcon, Constant.LoadingImgIcon })
+                foreach (var icon in new[] { Constant.DefaultIcon, Constant.ImageIcon, Constant.MissingImgIcon, Constant.LoadingImgIcon, Constant.FolderIcon })
                 {
                     ImageSource img = new BitmapImage(new Uri(icon));
                     img.Freeze();
@@ -204,13 +205,23 @@ namespace Flow.Launcher.Infrastructure.Image
 
             if (Directory.Exists(path))
             {
-                /* Directories can also have thumbnails instead of shell icons.
-                 * Generating thumbnails for a bunch of folder results while scrolling
-                 * could have a big impact on performance and Flow.Launcher responsibility.
-                 * - Solution: just load the icon
-                 */
-                type = ImageType.Folder;
-                image = GetThumbnail(path, ThumbnailOptions.IconOnly);
+                try
+                {
+                    /* Directories can also have thumbnails instead of shell icons.
+                    * Generating thumbnails for a bunch of folder results while scrolling
+                    * could have a big impact on performance and Flow.Launcher responsibility.
+                    * - Solution: just load the icon
+                    */
+                    type = ImageType.Folder;
+                    image = GetThumbnail(path, ThumbnailOptions.IconOnly);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
+                    type = ImageType.Folder;
+                    image = FolderImage;
+                }
+                
             }
             else if (File.Exists(path))
             {
