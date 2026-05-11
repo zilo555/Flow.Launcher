@@ -410,20 +410,20 @@ namespace Flow.Launcher.Infrastructure.Image
         {
             BitmapImage image = LoadBitmapImage(path);
 
-            if (image.PixelWidth > maxSize)
+            if (image.PixelWidth <= maxSize && image.PixelHeight <= maxSize)
+                return image;
+
+            bool widthIsLarger = image.PixelWidth >= image.PixelHeight;
+
+            // LoadBitmapImage will maintain aspect ratio so we only need to scale by the largest dimension
+            if (widthIsLarger)
             {
-                BitmapImage resizedWidth = LoadBitmapImage(path, decodePixelWidth: maxSize);
-
-                if (resizedWidth.PixelHeight > maxSize)
-                {
-                    BitmapImage resizedHeight = LoadBitmapImage(path, decodePixelHeight: maxSize);
-                    return resizedHeight;
-                }
-
-                return resizedWidth;
+                return LoadBitmapImage(path, decodePixelWidth: maxSize);
             }
-
-            return image;
+            else
+            {
+                return LoadBitmapImage(path, decodePixelHeight: maxSize);
+            }
         }
 
         private static BitmapImage LoadBitmapImage(string path, int? decodePixelWidth = null, int? decodePixelHeight = null)
