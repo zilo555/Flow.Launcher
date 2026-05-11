@@ -48,7 +48,7 @@ namespace Flow.Launcher.Infrastructure.Image
 
                 ImageCache.Initialize(usage);
 
-                foreach (var icon in new[] { Constant.DefaultIcon, Constant.ImageIcon, Constant.MissingImgIcon, Constant.LoadingImgIcon, Constant.FolderIcon })
+                foreach (var icon in new[] { Constant.DefaultIcon, Constant.MissingImgIcon, Constant.LoadingImgIcon, Constant.FolderIcon })
                 {
                     ImageSource img = new BitmapImage(new Uri(icon));
                     img.Freeze();
