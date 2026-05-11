@@ -151,14 +151,14 @@ namespace Flow.Launcher.Infrastructure.Image
                     return new ImageResult(imageSource, ImageType.Data);
                 }
 
-                imageResult = await Task.Run(() => GetThumbnailResult(ref path, loadFullImage));
+                imageResult = await Task.Run(() => GetThumbnailResult(path, loadFullImage));
             }
             catch (System.Exception e)
             {
                 try
                 {
                     // Get thumbnail may fail for certain images on the first try, retry again has proven to work
-                    imageResult = GetThumbnailResult(ref path, loadFullImage);
+                    imageResult = GetThumbnailResult(path, loadFullImage);
                 }
                 catch (System.Exception e2)
                 {
@@ -197,23 +197,23 @@ namespace Flow.Launcher.Infrastructure.Image
             return image;
         }
 
-        private static ImageResult GetThumbnailResult(ref string path, bool loadFullImage = false)
+        private static ImageResult GetThumbnailResult(string path, bool loadFullImage = false)
         {
             if (Directory.Exists(path))
-                return GetDirectoryThumbnailResult(ref path);
+                return GetDirectoryThumbnailResult(path);
 
             if (!File.Exists(path))
-                return GetMissingThumbnailResult(ref path);
+                return GetMissingThumbnailResult();
 
             var extension = Path.GetExtension(path).ToLower();
 
             if (ImageExtensions.Contains(extension))
-                return GetImageFileThumbnailResult(ref path, loadFullImage);
+                return GetImageFileThumbnailResult(path, loadFullImage);
 
             if (extension == SvgExtension)
-                return GetSvgFileThumbnailResult(ref path, loadFullImage);
+                return GetSvgFileThumbnailResult(path, loadFullImage);
 
-            return GetFileThumbnailResult(ref path, loadFullImage);
+            return GetFileThumbnailResult(path, loadFullImage);
         }
 
         private static ImageResult CreateImageResult(ImageSource image, ImageType type)
@@ -226,13 +226,12 @@ namespace Flow.Launcher.Infrastructure.Image
             return new ImageResult(image, type);
         }
 
-        private static ImageResult GetMissingThumbnailResult(ref string path)
+        private static ImageResult GetMissingThumbnailResult()
         {
-            path = Constant.MissingImgIcon;
             return CreateImageResult(MissingImage, ImageType.Error);
         }
 
-        private static ImageResult GetDirectoryThumbnailResult(ref string path)
+        private static ImageResult GetDirectoryThumbnailResult(string path)
         {
             try
             {
@@ -247,12 +246,11 @@ namespace Flow.Launcher.Infrastructure.Image
             catch (System.Exception ex)
             {
                 Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
-                path = Constant.FolderIcon;
                 return CreateImageResult(FolderImage, ImageType.Folder);
             }
         }
 
-        private static ImageResult GetImageFileThumbnailResult(ref string path, bool loadFullImage)
+        private static ImageResult GetImageFileThumbnailResult(string path, bool loadFullImage)
         {
             if (loadFullImage)
             {
@@ -264,7 +262,7 @@ namespace Flow.Launcher.Infrastructure.Image
                 catch (NotSupportedException ex)
                 {
                     Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex.Message}", ex);
-                    return GetMissingThumbnailResult(ref path);
+                    return GetMissingThumbnailResult();
                 }
             }
 
@@ -290,12 +288,12 @@ namespace Flow.Launcher.Infrastructure.Image
                 catch (System.Exception ex2)
                 {
                     Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex2.Message}", ex2);
-                    return GetMissingThumbnailResult(ref path);
+                    return GetMissingThumbnailResult();
                 }
             }
         }
 
-        private static ImageResult GetSvgFileThumbnailResult(ref string path, bool loadFullImage)
+        private static ImageResult GetSvgFileThumbnailResult(string path, bool loadFullImage)
         {
             try
             {
@@ -305,11 +303,11 @@ namespace Flow.Launcher.Infrastructure.Image
             catch (System.Exception ex)
             {
                 Log.Exception(ClassName, $"Failed to load SVG image from path {path}: {ex.Message}", ex);
-                return GetMissingThumbnailResult(ref path);
+                return GetMissingThumbnailResult();
             }
         }
 
-        private static ImageResult GetFileThumbnailResult(ref string path, bool loadFullImage)
+        private static ImageResult GetFileThumbnailResult(string path, bool loadFullImage)
         {
             var size = loadFullImage ? FullIconSize : SmallIconSize;
             try
@@ -326,7 +324,7 @@ namespace Flow.Launcher.Infrastructure.Image
                     return CreateImageResult(image, ImageType.File);
 
                 Log.Info(ClassName, $"ExtractAssociatedIcon returned no icon for {path}. Using missing image.");
-                return GetMissingThumbnailResult(ref path);
+                return GetMissingThumbnailResult();
             }
         }
 
