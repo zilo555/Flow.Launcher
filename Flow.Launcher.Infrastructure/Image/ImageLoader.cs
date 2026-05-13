@@ -404,14 +404,56 @@ namespace Flow.Launcher.Infrastructure.Image
             return img;
         }
 
+        private static bool TryGetBitmapImageDimensionsFromMetadata(string path, out int width, out int height)
+        {
+            width = 0;
+            height = 0;
+
+            try
+            {
+                using var stream = File.OpenRead(path);
+                var decoder = BitmapDecoder.Create(
+                    stream,
+                    BitmapCreateOptions.DelayCreation,
+                    BitmapCacheOption.None);
+
+                var frame = decoder.Frames.FirstOrDefault();
+                if (frame is null)
+                    return false;
+
+                width = frame.PixelWidth;
+                height = frame.PixelHeight;
+                return width > 0 && height > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private static BitmapImage LoadBitmapImageScaleToFitWithin(string path, int maxSize)
         {
-            BitmapImage image = LoadBitmapImage(path);
+            BitmapImage decodedImage = null;
 
-            if (image.PixelWidth <= maxSize && image.PixelHeight <= maxSize)
-                return image;
+            // try to get the image's dimensions from metadata before fully decoding the image
+            bool metadataReadSucceeded = TryGetBitmapImageDimensionsFromMetadata(path, out var width, out var height);
 
-            bool widthIsLarger = image.PixelWidth >= image.PixelHeight;
+            // if we couldn't read the metadata then fully load the image and get dimensions from that
+            if (!metadataReadSucceeded)
+            {
+                decodedImage = LoadBitmapImage(path);
+                width = decodedImage.PixelWidth;
+                height = decodedImage.PixelHeight;
+            }
+
+            // If resizing is unnecessary, return the original image
+            // (reusing the already decoded image if available).
+            if (width <= maxSize && height <= maxSize)
+            {
+                return decodedImage ?? LoadBitmapImage(path);
+            }
+
+            bool widthIsLarger = width >= height;
 
             // LoadBitmapImage will maintain aspect ratio so we only need to scale by the largest dimension
             if (widthIsLarger)
