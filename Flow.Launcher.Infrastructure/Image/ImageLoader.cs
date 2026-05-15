@@ -162,8 +162,8 @@ namespace Flow.Launcher.Infrastructure.Image
                 }
                 catch (System.Exception e2)
                 {
-                    Log.Exception(ClassName, $"Failed to get thumbnail for {path} on first try", e);
-                    Log.Exception(ClassName, $"Failed to get thumbnail for {path} on second try", e2);
+                    Log.Warn(ClassName, $"Failed to get thumbnail for {path} on first try: {e.Message}");
+                    Log.Warn(ClassName, $"Failed to get thumbnail for {path} on second try: {e2.Message}");
 
                     ImageSource image = MissingImage;
                     ImageCache[path, false] = image;
@@ -245,7 +245,7 @@ namespace Flow.Launcher.Infrastructure.Image
             }
             catch (System.Exception ex)
             {
-                Log.Info(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
+                Log.Warn(ClassName, $"Failed to get shell thumbnail for folder {path}: {ex.Message}\nUsing default folder image as fallback.");
                 return CreateImageResult(FolderImage, ImageType.Folder);
             }
         }
@@ -261,7 +261,7 @@ namespace Flow.Launcher.Infrastructure.Image
                 }
                 catch (NotSupportedException ex)
                 {
-                    Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex.Message}", ex);
+                    Log.Warn(ClassName, $"Failed to load image file from path {path}: {ex.Message}\nUsing missing icon instead.");
                     return GetMissingThumbnailResult();
                 }
             }
@@ -278,7 +278,7 @@ namespace Flow.Launcher.Infrastructure.Image
             }
             catch (System.Exception ex)
             {
-                Log.Info(ClassName, $"Failed to get shell thumbnail for image file {path}: {ex.Message}\nTrying bitmap fallback.");
+                Log.Debug(ClassName, $"Failed to get shell thumbnail for image file {path}: {ex.Message}\nTrying bitmap fallback.");
 
                 try
                 {
@@ -287,7 +287,7 @@ namespace Flow.Launcher.Infrastructure.Image
                 }
                 catch (System.Exception ex2)
                 {
-                    Log.Exception(ClassName, $"Failed to load image file from path {path}: {ex2.Message}", ex2);
+                    Log.Warn(ClassName, $"Failed to load image file from path {path}: {ex2.Message}\nUsing missing icon instead.");
                     return GetMissingThumbnailResult();
                 }
             }
@@ -302,7 +302,7 @@ namespace Flow.Launcher.Infrastructure.Image
             }
             catch (System.Exception ex)
             {
-                Log.Exception(ClassName, $"Failed to load SVG image from path {path}: {ex.Message}", ex);
+                Log.Warn(ClassName, $"Failed to load SVG image from path {path}: {ex.Message}\nUsing missing icon instead.");
                 return GetMissingThumbnailResult();
             }
         }
@@ -317,13 +317,13 @@ namespace Flow.Launcher.Infrastructure.Image
             }
             catch (System.Exception ex)
             {
-                Log.Info(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
+                Log.Debug(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
 
                 var image = ExtractAssociatedIconOrNull(path, size);
                 if (image != null)
                     return CreateImageResult(image, ImageType.File);
 
-                Log.Info(ClassName, $"ExtractAssociatedIcon returned no icon for {path}. Using missing image.");
+                Log.Warn(ClassName, $"ExtractAssociatedIcon returned no icon for path: {path}\nUsing missing icon instead.");
                 return GetMissingThumbnailResult();
             }
         }
