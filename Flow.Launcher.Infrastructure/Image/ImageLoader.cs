@@ -200,7 +200,7 @@ namespace Flow.Launcher.Infrastructure.Image
         private static ImageResult GetThumbnailResult(string path, bool loadFullImage = false)
         {
             if (Directory.Exists(path))
-                return GetDirectoryThumbnailResult(path);
+                return GetDirectoryThumbnailResult(path, loadFullImage);
 
             if (!File.Exists(path))
                 return GetMissingThumbnailResult();
@@ -231,8 +231,9 @@ namespace Flow.Launcher.Infrastructure.Image
             return CreateImageResult(MissingImage, ImageType.Error);
         }
 
-        private static ImageResult GetDirectoryThumbnailResult(string path)
+        private static ImageResult GetDirectoryThumbnailResult(string path, bool loadFullImage)
         {
+            var size = loadFullImage ? FullIconSize : SmallIconSize;
             try
             {
                 /* Directories can also have thumbnails instead of shell icons.
@@ -240,7 +241,7 @@ namespace Flow.Launcher.Infrastructure.Image
                  * could have a big impact on performance and Flow.Launcher responsibility.
                  * - Solution: just load the icon
                  */
-                var image = GetThumbnail(path, ThumbnailOptions.IconOnly);
+                var image = GetThumbnail(path, ThumbnailOptions.IconOnly, size);
                 return CreateImageResult(image, ImageType.Folder);
             }
             catch (System.Exception ex)
