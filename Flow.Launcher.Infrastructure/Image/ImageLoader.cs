@@ -320,9 +320,10 @@ namespace Flow.Launcher.Infrastructure.Image
             {
                 Log.Debug(ClassName, $"Failed to get shell thumbnail for {path}: {ex.Message}\nTrying ExtractAssociatedIcon fallback.");
 
-                var image = ExtractAssociatedIconOrNull(path, size);
-                if (image != null)
+                if (TryExtractAssociatedIcon(path, size, out var image))
+                {
                     return CreateImageResult(image, ImageType.File);
+                }
 
                 Log.Warn(ClassName, $"ExtractAssociatedIcon returned no icon for path: {path}\nUsing missing icon instead.");
                 return GetMissingThumbnailResult();
@@ -339,26 +340,29 @@ namespace Flow.Launcher.Infrastructure.Image
                 option);
         }
 
-        private static BitmapSource ExtractAssociatedIconOrNull(string path, int size)
+        private static bool TryExtractAssociatedIcon(string path, int size, out BitmapSource image)
         {
+            image = null;
+
             try
             {
                 using var icon = System.Drawing.Icon.ExtractAssociatedIcon(path);
                 if (icon == null)
                 {
-                    return null;
+                    return false;
                 }
 
-                var image = Imaging.CreateBitmapSourceFromHIcon(
+                image = Imaging.CreateBitmapSourceFromHIcon(
                     icon.Handle,
                     Int32Rect.Empty,
                     BitmapSizeOptions.FromWidthAndHeight(size, size));
                 image.Freeze();
-                return image;
+                return true;
             }
             catch
             {
-                return null;
+                image = null;
+                return false;
             }
         }
 
