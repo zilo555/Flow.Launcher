@@ -35,7 +35,7 @@ namespace Flow.Launcher.Infrastructure.Image
 
         private static readonly string[] ImageExtensions = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".ico"];
         private static readonly string SvgExtension = ".svg";
-        internal static Func<string, ThumbnailOptions, int, BitmapSource> ThumbnailLoader { get; set; } =
+        internal static Func<string, ThumbnailOptions, int, BitmapSource> ShellThumbnailLoader { get; set; } =
             (path, option, size) =>
                 WindowsThumbnailProvider.GetThumbnail(
                     path,
@@ -248,7 +248,7 @@ namespace Flow.Launcher.Infrastructure.Image
                  * could have a big impact on performance and Flow.Launcher responsibility.
                  * - Solution: just load the icon
                  */
-                var image = GetThumbnail(path, ThumbnailOptions.IconOnly, size);
+                var image = GetShellThumbnail(path, ThumbnailOptions.IconOnly, size);
                 return CreateImageResult(image, ImageType.Folder);
             }
             catch (System.Exception ex)
@@ -281,7 +281,7 @@ namespace Flow.Launcher.Infrastructure.Image
                  * be the case in many situations while testing.
                  * - Solution: explicitly pass the ThumbnailOnly flag
                  */
-                var image = GetThumbnail(path, ThumbnailOptions.ThumbnailOnly);
+                var image = GetShellThumbnail(path, ThumbnailOptions.ThumbnailOnly);
                 return CreateImageResult(image, ImageType.ImageFile);
             }
             catch (System.Exception ex)
@@ -320,7 +320,7 @@ namespace Flow.Launcher.Infrastructure.Image
             var size = loadFullImage ? FullIconSize : SmallIconSize;
             try
             {
-                var image = GetThumbnail(path, ThumbnailOptions.None, size);
+                var image = GetShellThumbnail(path, ThumbnailOptions.None, size);
                 return CreateImageResult(image, ImageType.File);
             }
             catch (System.Exception ex)
@@ -337,10 +337,10 @@ namespace Flow.Launcher.Infrastructure.Image
             }
         }
 
-        private static BitmapSource GetThumbnail(string path, ThumbnailOptions option = ThumbnailOptions.ThumbnailOnly,
+        private static BitmapSource GetShellThumbnail(string path, ThumbnailOptions option = ThumbnailOptions.ThumbnailOnly,
             int size = SmallIconSize)
         {
-            return ThumbnailLoader(path, option, size);
+            return ShellThumbnailLoader(path, option, size);
         }
 
         private static bool TryExtractAssociatedIcon(string path, int size, out BitmapSource image)

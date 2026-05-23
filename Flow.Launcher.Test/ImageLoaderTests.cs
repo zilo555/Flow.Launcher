@@ -14,9 +14,9 @@ namespace Flow.Launcher.Test
     [NonParallelizable]
     public class ImageLoaderTests
     {
-        private Func<string, ThumbnailOptions, int, BitmapSource> _originalThumbnailLoader;
+        private Func<string, ThumbnailOptions, int, BitmapSource> _originalShellThumbnailLoader;
 
-        private Func<string, ThumbnailOptions, int, BitmapSource> _failingThumbnailLoader =
+        private Func<string, ThumbnailOptions, int, BitmapSource> _failingShellThumbnailLoader =
             (_, _, _) => throw new InvalidOperationException("Forced shell thumbnail failure");
 
 
@@ -37,13 +37,13 @@ namespace Flow.Launcher.Test
         [SetUp]
         public void SetUp()
         {
-            _originalThumbnailLoader = ImageLoader.ThumbnailLoader;
+            _originalShellThumbnailLoader = ImageLoader.ShellThumbnailLoader;
         }
 
         [TearDown]
         public void TearDown()
         {
-            ImageLoader.ThumbnailLoader = _originalThumbnailLoader;
+            ImageLoader.ShellThumbnailLoader = _originalShellThumbnailLoader;
         }
 
         #region Missing Image Cases
@@ -107,7 +107,7 @@ namespace Flow.Launcher.Test
 
             try
             {
-                ImageLoader.ThumbnailLoader = _failingThumbnailLoader;
+                ImageLoader.ShellThumbnailLoader = _failingShellThumbnailLoader;
 
                 var image = await ImageLoader.LoadAsync(tempFolder, loadFullImage: false, cacheImage: false);
 
@@ -136,7 +136,7 @@ namespace Flow.Launcher.Test
 
             try
             {
-                ImageLoader.ThumbnailLoader = _failingThumbnailLoader;
+                ImageLoader.ShellThumbnailLoader = _failingShellThumbnailLoader;
 
                 var image = await ImageLoader.LoadAsync(tempImagePath, loadFullImage: false, cacheImage: false);
 
@@ -161,7 +161,7 @@ namespace Flow.Launcher.Test
             Assert.That(executablePath, Is.Not.Null.And.Not.Empty, "Current process executable path is unavailable.");
             Assert.That(File.Exists(executablePath), Is.True, $"Current process executable path does not exist: {executablePath}");
 
-            ImageLoader.ThumbnailLoader = _failingThumbnailLoader;
+            ImageLoader.ShellThumbnailLoader = _failingShellThumbnailLoader;
 
             var image = await ImageLoader.LoadAsync(executablePath, loadFullImage: false, cacheImage: false);
 
@@ -178,7 +178,7 @@ namespace Flow.Launcher.Test
 
             try
             {
-                ImageLoader.ThumbnailLoader = _failingThumbnailLoader;
+                ImageLoader.ShellThumbnailLoader = _failingShellThumbnailLoader;
 
                 var image = await ImageLoader.LoadAsync(tempTextPath, loadFullImage: false, cacheImage: false);
 
