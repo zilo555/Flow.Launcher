@@ -35,6 +35,13 @@ namespace Flow.Launcher.Infrastructure.Image
 
         private static readonly string[] ImageExtensions = [".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff", ".ico"];
         private static readonly string SvgExtension = ".svg";
+        internal static Func<string, ThumbnailOptions, int, BitmapSource> ThumbnailLoader { get; set; } =
+            (path, option, size) =>
+                WindowsThumbnailProvider.GetThumbnail(
+                    path,
+                    size,
+                    size,
+                    option);
 
         public static async Task InitializeAsync()
         {
@@ -333,11 +340,7 @@ namespace Flow.Launcher.Infrastructure.Image
         private static BitmapSource GetThumbnail(string path, ThumbnailOptions option = ThumbnailOptions.ThumbnailOnly,
             int size = SmallIconSize)
         {
-            return WindowsThumbnailProvider.GetThumbnail(
-                path,
-                size,
-                size,
-                option);
+            return ThumbnailLoader(path, option, size);
         }
 
         private static bool TryExtractAssociatedIcon(string path, int size, out BitmapSource image)
