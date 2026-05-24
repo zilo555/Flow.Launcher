@@ -32,6 +32,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
 
             const int MAX_PATH = 260;
+            const int INFOTIPSIZE = 1024;
 
             var data = new WIN32_FIND_DATAW();
             var target = string.Empty;
@@ -55,10 +56,10 @@ namespace Flow.Launcher.Plugin.Program.Programs
             {
                 try
                 {
-                    Span<char> descriptionBuffer = stackalloc char[MAX_PATH];
+                    Span<char> descriptionBuffer = stackalloc char[INFOTIPSIZE];
                     fixed (char* descriptionBufferPtr = descriptionBuffer)
                     {
-                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, MAX_PATH);
+                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, INFOTIPSIZE);
                         description = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(descriptionBufferPtr).ToString();
                     }
                 }
