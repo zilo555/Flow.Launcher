@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Flow.Launcher.Plugin.Program.Logger;
@@ -336,11 +335,8 @@ namespace Flow.Launcher.Plugin.Program.Programs
         {
             var program = Win32Program(path);
             try
-            {
-                const int MAX_PATH = 260;
-                StringBuilder buffer = new StringBuilder(MAX_PATH);
-                
-                var shellLink = ShellLinkHelper.Read(path);
+            {   
+                var shellLink = ShellLinkReader.Read(path);
                 string target = shellLink.TargetPath;
 
                 if (!string.IsNullOrEmpty(target) && File.Exists(target))
