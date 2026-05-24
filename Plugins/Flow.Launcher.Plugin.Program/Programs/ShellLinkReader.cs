@@ -12,7 +12,7 @@ using Windows.Win32.Storage.FileSystem;
 
 namespace Flow.Launcher.Plugin.Program.Programs
 {
-    public static class ShellLinkHelper
+    public static class ShellLinkReader
     {
         // Retrieves the target path, arguments, and description from a shell link
         public static ShellLinkReadResult Read(string path)
