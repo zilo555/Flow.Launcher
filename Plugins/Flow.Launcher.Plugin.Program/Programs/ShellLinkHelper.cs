@@ -14,12 +14,6 @@ namespace Flow.Launcher.Plugin.Program.Programs
 {
     public class ShellLinkHelper
     {
-        // Reference : http://www.pinvoke.net/default.aspx/Interfaces.IShellLinkW
-        [ComImport(), Guid("00021401-0000-0000-C000-000000000046")]
-        public class ShellLink
-        {
-        }
-
         // To initialize the app description
         public string description = string.Empty;
         public string arguments = string.Empty;
