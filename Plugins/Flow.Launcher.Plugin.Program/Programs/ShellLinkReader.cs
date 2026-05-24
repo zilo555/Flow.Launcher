@@ -4,6 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 using Flow.Launcher.Plugin.Program.Logger;
 using Windows.Win32;
 using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
 using Windows.Win32.System.Com.StructuredStorage;
 using Windows.Win32.System.Variant;
 using Windows.Win32.UI.Shell;
@@ -20,8 +21,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             var link = new ShellLink();
             try
             {
-                const int STGM_READ = 0;
-                ((IPersistFile)link).Load(path, STGM_READ);
+                ((IPersistFile)link).Load(path, (int)STGM.STGM_READ);
                 var hwnd = new HWND(IntPtr.Zero);
                 // Use SLR_NO_UI to avoid showing any UI during resolution, like Problem with Shortcut dialogs
                 // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
