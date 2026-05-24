@@ -11,3 +11,9 @@ IShellItem
 SHCreateItemFromParsingName
 IShellLinkW
 CoTaskMemFree
+IPropertyStore
+PROPERTYKEY
+PROPVARIANT
+PKEY_Link_Arguments
+PropVariantClear
+VARENUM

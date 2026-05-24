@@ -2,8 +2,12 @@
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Flow.Launcher.Plugin.Program.Logger;
+using Windows.Win32;
 using Windows.Win32.Foundation;
+using Windows.Win32.System.Com.StructuredStorage;
+using Windows.Win32.System.Variant;
 using Windows.Win32.UI.Shell;
+using Windows.Win32.UI.Shell.PropertiesSystem;
 using Windows.Win32.Storage.FileSystem;
 
 namespace Flow.Launcher.Plugin.Program.Programs
@@ -71,18 +75,46 @@ namespace Flow.Launcher.Plugin.Program.Programs
                         e);
                 }
 
-                Span<char> argumentsBuffer = stackalloc char[MAX_PATH];
-                fixed (char* argumentsBufferPtr = argumentsBuffer)
-                {
-                    ((IShellLinkW)link).GetArguments(argumentsBufferPtr, MAX_PATH);
-                    arguments = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(argumentsBufferPtr).ToString();
-                }
+                arguments = retrieveArguments((IPropertyStore)link, path);
             }
 
             // To release unmanaged memory
             Marshal.ReleaseComObject(link);
 
             return target;
+        }
+
+        private static string retrieveArguments(IPropertyStore shellLinkPropertyStore, string path)
+        {
+            PROPVARIANT argumentsProperty = new PROPVARIANT();
+
+            try
+            {
+                var argumentsKey = PInvoke.PKEY_Link_Arguments;
+                shellLinkPropertyStore.GetValue(in argumentsKey, out argumentsProperty);
+
+                // CsWin32 preserves native C unions, so nested union fields are generated as "Anonymous".
+                // see structure at https://learn.microsoft.com/en-ie/windows/win32/api/propidlbase/ns-propidlbase-propvariant#syntax
+                var propVariantHeader = argumentsProperty.Anonymous.Anonymous;
+                var propVariantValueUnion = propVariantHeader.Anonymous;
+                var propVariantType = propVariantHeader.vt;
+                
+                return propVariantType switch
+                {
+                    VARENUM.VT_EMPTY => string.Empty,
+                    VARENUM.VT_LPWSTR => propVariantValueUnion.pwszVal.ToString(),
+                    _ => string.Empty
+                };
+            }
+            catch (COMException e)
+            {
+                ProgramLogger.LogException($"|IShellLinkW|retrieveArguments|{path}|Error occurred while getting program arguments", e);
+                return string.Empty;
+            }
+            finally
+            {
+                PInvoke.PropVariantClear(ref argumentsProperty);
+            }
         }
     }
 }
