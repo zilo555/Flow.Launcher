@@ -32,16 +32,16 @@ namespace Flow.Launcher.Plugin.Program.Programs
             ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
 
             const int MAX_PATH = 260;
-            Span<char> buffer = stackalloc char[MAX_PATH];
 
             var data = new WIN32_FIND_DATAW();
             var target = string.Empty;
             try
             {
-                fixed (char* bufferPtr = buffer)
+                Span<char> targetBuffer = stackalloc char[MAX_PATH];
+                fixed (char* targetBufferPtr = targetBuffer)
                 {
-                    ((IShellLinkW)link).GetPath((PWSTR)bufferPtr, MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
-                    target = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(bufferPtr).ToString();
+                    ((IShellLinkW)link).GetPath((PWSTR)targetBufferPtr, MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
+                    target = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(targetBufferPtr).ToString();
                 }
             }
             catch (COMException e)
@@ -55,10 +55,11 @@ namespace Flow.Launcher.Plugin.Program.Programs
             {
                 try
                 {
-                    fixed (char* bufferPtr = buffer)
+                    Span<char> descriptionBuffer = stackalloc char[MAX_PATH];
+                    fixed (char* descriptionBufferPtr = descriptionBuffer)
                     {
-                        ((IShellLinkW)link).GetDescription(bufferPtr, MAX_PATH);
-                        description = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(bufferPtr).ToString();
+                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, MAX_PATH);
+                        description = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(descriptionBufferPtr).ToString();
                     }
                 }
                 catch (COMException e)
@@ -69,10 +70,11 @@ namespace Flow.Launcher.Plugin.Program.Programs
                         e);
                 }
 
-                fixed (char* bufferPtr = buffer)
+                Span<char> argumentsBuffer = stackalloc char[MAX_PATH];
+                fixed (char* argumentsBufferPtr = argumentsBuffer)
                 {
-                    ((IShellLinkW)link).GetArguments(bufferPtr, MAX_PATH);
-                    arguments = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(bufferPtr).ToString();
+                    ((IShellLinkW)link).GetArguments(argumentsBufferPtr, MAX_PATH);
+                    arguments = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(argumentsBufferPtr).ToString();
                 }
             }
 
