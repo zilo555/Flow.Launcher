@@ -35,17 +35,14 @@ namespace Flow.Launcher.Plugin.Program.Programs
             // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
             ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
 
-            const int MAX_PATH = 260;
-            const int INFOTIPSIZE = 1024;
-
             var data = new WIN32_FIND_DATAW();
             var target = string.Empty;
             try
             {
-                Span<char> targetBuffer = stackalloc char[MAX_PATH];
+                Span<char> targetBuffer = stackalloc char[(int)PInvoke.MAX_PATH];
                 fixed (char* targetBufferPtr = targetBuffer)
                 {
-                    ((IShellLinkW)link).GetPath((PWSTR)targetBufferPtr, MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
+                    ((IShellLinkW)link).GetPath((PWSTR)targetBufferPtr, (int)PInvoke.MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
                     target = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(targetBufferPtr).ToString();
                 }
             }
@@ -60,10 +57,10 @@ namespace Flow.Launcher.Plugin.Program.Programs
             {
                 try
                 {
-                    Span<char> descriptionBuffer = stackalloc char[INFOTIPSIZE];
+                    Span<char> descriptionBuffer = stackalloc char[(int)PInvoke.INFOTIPSIZE];
                     fixed (char* descriptionBufferPtr = descriptionBuffer)
                     {
-                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, INFOTIPSIZE);
+                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, (int)PInvoke.INFOTIPSIZE);
                         description = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(descriptionBufferPtr).ToString();
                     }
                 }
