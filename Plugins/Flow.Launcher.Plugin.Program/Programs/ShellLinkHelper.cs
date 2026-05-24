@@ -55,23 +55,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             // To set the app description
             if (!string.IsNullOrEmpty(target))
             {
-                try
-                {
-                    Span<char> descriptionBuffer = stackalloc char[(int)PInvoke.INFOTIPSIZE];
-                    fixed (char* descriptionBufferPtr = descriptionBuffer)
-                    {
-                        ((IShellLinkW)link).GetDescription(descriptionBufferPtr, (int)PInvoke.INFOTIPSIZE);
-                        description = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(descriptionBufferPtr).ToString();
-                    }
-                }
-                catch (COMException e)
-                {
-                    // C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\MiracastView.lnk always cause exception
-                    ProgramLogger.LogException($"|IShellLinkW|retrieveTargetPath|{path}" +
-                                               "|Error caused likely due to trying to get the description of the program",
-                        e);
-                }
-
+                description = retrieveDescription((IShellLinkW)link, path);
                 arguments = retrieveArguments((IPropertyStore)link, path);
             }
 
@@ -79,6 +63,29 @@ namespace Flow.Launcher.Plugin.Program.Programs
             Marshal.ReleaseComObject(link);
 
             return target;
+        }
+
+        private static unsafe string retrieveDescription(IShellLinkW shellLink, string path)
+        {
+            try
+            {
+                Span<char> descriptionBuffer = stackalloc char[(int)PInvoke.INFOTIPSIZE];
+                fixed (char* descriptionBufferPtr = descriptionBuffer)
+                {
+                    shellLink.GetDescription(descriptionBufferPtr, (int)PInvoke.INFOTIPSIZE);
+                    return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(descriptionBufferPtr).ToString();
+                }
+            }
+            catch (COMException e)
+            {
+                // C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\MiracastView.lnk always cause exception
+                ProgramLogger.LogException(
+                    $"|IShellLinkW|retrieveDescription|{path}" +
+                    "|Error caused likely due to trying to get the description of the program",
+                    e
+                );
+                return string.Empty;
+            }
         }
 
         private static string retrieveArguments(IPropertyStore shellLinkPropertyStore, string path)
