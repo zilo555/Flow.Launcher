@@ -43,7 +43,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             catch (COMException e)
             {
                 ProgramLogger.LogException($"|IShellLinkW|retrieveTargetPath|{path}" +
-                "|Error occurred while getting program arguments", e);
+                "|Error occurred while getting program target path from shell link", e);
             }
 
             // To set the app description
