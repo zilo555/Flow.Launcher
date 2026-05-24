@@ -12,51 +12,51 @@ using Windows.Win32.Storage.FileSystem;
 
 namespace Flow.Launcher.Plugin.Program.Programs
 {
-    public class ShellLinkHelper
+    public static class ShellLinkHelper
     {
-        // To initialize the app description
-        public string description = string.Empty;
-        public string arguments = string.Empty;
-
-        // Retrieve the target path using Shell Link
-        public unsafe string retrieveTargetPath(string path)
+        // Retrieves the target path, arguments, and description from a shell link
+        public static ShellLinkReadResult Read(string path)
         {
             var link = new ShellLink();
-            const int STGM_READ = 0;
-            ((IPersistFile)link).Load(path, STGM_READ);
-            var hwnd = new HWND(IntPtr.Zero);
-            // Use SLR_NO_UI to avoid showing any UI during resolution, like Problem with Shortcut dialogs
-            // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
-            ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
+            try
+            {
+                const int STGM_READ = 0;
+                ((IPersistFile)link).Load(path, STGM_READ);
+                var hwnd = new HWND(IntPtr.Zero);
+                // Use SLR_NO_UI to avoid showing any UI during resolution, like Problem with Shortcut dialogs
+                // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
+                ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
 
+                var target = retrieveTargetPath((IShellLinkW)link, path);
+                var description = retrieveDescription((IShellLinkW)link, path);
+                var arguments = retrieveArguments((IPropertyStore)link, path);
+                return new ShellLinkReadResult(target, description, arguments);
+            }
+            finally
+            {
+                // release unmanaged memory
+                Marshal.ReleaseComObject(link);
+            }
+        }
+
+        private static unsafe string retrieveTargetPath(IShellLinkW shellLink, string path)
+        {
             var data = new WIN32_FIND_DATAW();
-            var target = string.Empty;
             try
             {
                 Span<char> targetBuffer = stackalloc char[(int)PInvoke.MAX_PATH];
                 fixed (char* targetBufferPtr = targetBuffer)
                 {
-                    ((IShellLinkW)link).GetPath((PWSTR)targetBufferPtr, (int)PInvoke.MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
-                    target = MemoryMarshal.CreateReadOnlySpanFromNullTerminated(targetBufferPtr).ToString();
+                    shellLink.GetPath((PWSTR)targetBufferPtr, (int)PInvoke.MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
+                    return MemoryMarshal.CreateReadOnlySpanFromNullTerminated(targetBufferPtr).ToString();
                 }
             }
             catch (COMException e)
             {
                 ProgramLogger.LogException($"|IShellLinkW|retrieveTargetPath|{path}" +
-                "|Error occurred while getting program target path from shell link", e);
+                    "|Error occurred while getting program target path from shell link", e);
+                return string.Empty;
             }
-
-            // To set the app description
-            if (!string.IsNullOrEmpty(target))
-            {
-                description = retrieveDescription((IShellLinkW)link, path);
-                arguments = retrieveArguments((IPropertyStore)link, path);
-            }
-
-            // To release unmanaged memory
-            Marshal.ReleaseComObject(link);
-
-            return target;
         }
 
         private static unsafe string retrieveDescription(IShellLinkW shellLink, string path)

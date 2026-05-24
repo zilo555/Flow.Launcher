@@ -339,21 +339,22 @@ namespace Flow.Launcher.Plugin.Program.Programs
             {
                 const int MAX_PATH = 260;
                 StringBuilder buffer = new StringBuilder(MAX_PATH);
-                ShellLinkHelper _helper = new ShellLinkHelper();
-                string target = _helper.retrieveTargetPath(path);
+                
+                var shellLink = ShellLinkHelper.Read(path);
+                string target = shellLink.TargetPath;
 
                 if (!string.IsNullOrEmpty(target) && File.Exists(target))
                 {
                     program.LnkResolvedPath = Path.GetFullPath(target);
                     program.ExecutableName = Path.GetFileNameWithoutExtension(target);
 
-                    var args = _helper.arguments;
+                    var args = shellLink.Arguments;
                     if (!string.IsNullOrEmpty(args))
                     {
                         program.Args = args;
                     }
 
-                    var description = _helper.description;
+                    var description = shellLink.Description;
                     if (!string.IsNullOrEmpty(description))
                     {
                         program.Description = description;
