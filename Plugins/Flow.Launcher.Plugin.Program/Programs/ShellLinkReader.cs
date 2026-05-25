@@ -32,7 +32,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
                 catch (COMException e)
                 {
                     ProgramLogger.LogException(
-                        $"|IShellLinkW|Read|{path}|Error occurred while loading or resolving shell link",
+                        $"|ShellLinkReader|Read|{path}|Error occurred while loading or resolving shell link",
                         e
                     );
                     return new ShellLinkReadResult(string.Empty, string.Empty, string.Empty);
@@ -65,7 +65,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             }
             catch (COMException e)
             {
-                ProgramLogger.LogException($"|IShellLinkW|retrieveTargetPath|{path}" +
+                ProgramLogger.LogException($"|ShellLinkReader|retrieveTargetPath|{path}" +
                     "|Error occurred while getting program target path from shell link", e);
                 return string.Empty;
             }
@@ -87,7 +87,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             {
                 // C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\MiracastView.lnk always cause exception
                 ProgramLogger.LogException(
-                    $"|IShellLinkW|retrieveDescription|{path}" +
+                    $"|ShellLinkReader|retrieveDescription|{path}" +
                     "|Error caused likely due to trying to get the description of the program",
                     e
                 );
@@ -119,7 +119,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             }
             catch (COMException e)
             {
-                ProgramLogger.LogException($"|IShellLinkW|retrieveArguments|{path}|Error occurred while getting program arguments", e);
+                ProgramLogger.LogException($"|ShellLinkReader|retrieveArguments|{path}|Error occurred while getting program arguments", e);
                 return string.Empty;
             }
             finally
