@@ -21,11 +21,22 @@ namespace Flow.Launcher.Plugin.Program.Programs
             var link = new ShellLink();
             try
             {
-                ((IPersistFile)link).Load(path, (int)STGM.STGM_READ);
-                var hwnd = new HWND(IntPtr.Zero);
-                // Use SLR_NO_UI to avoid showing any UI during resolution, like Problem with Shortcut dialogs
-                // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
-                ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
+                try
+                {
+                    ((IPersistFile)link).Load(path, (int)STGM.STGM_READ);
+                    var hwnd = new HWND(IntPtr.Zero);
+                    // Use SLR_NO_UI to avoid showing any UI during resolution, like Problem with Shortcut dialogs
+                    // https://learn.microsoft.com/en-us/windows/win32/api/shobjidl_core/nf-shobjidl_core-ishelllinka-resolve
+                    ((IShellLinkW)link).Resolve(hwnd, (uint)SLR_FLAGS.SLR_NO_UI);
+                }
+                catch (COMException e)
+                {
+                    ProgramLogger.LogException(
+                        $"|IShellLinkW|Read|{path}|Error occurred while loading or resolving shell link",
+                        e
+                    );
+                    return new ShellLinkReadResult(string.Empty, string.Empty, string.Empty);
+                }
 
                 var target = retrieveTargetPath((IShellLinkW)link, path);
                 var description = retrieveDescription((IShellLinkW)link, path);
