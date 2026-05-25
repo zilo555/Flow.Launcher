@@ -56,6 +56,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             try
             {
                 Span<char> targetBuffer = stackalloc char[(int)PInvoke.MAX_PATH];
+                targetBuffer.Clear();
                 fixed (char* targetBufferPtr = targetBuffer)
                 {
                     shellLink.GetPath((PWSTR)targetBufferPtr, (int)PInvoke.MAX_PATH, &data, (uint)SLGP_FLAGS.SLGP_SHORTPATH);
@@ -75,6 +76,7 @@ namespace Flow.Launcher.Plugin.Program.Programs
             try
             {
                 Span<char> descriptionBuffer = stackalloc char[(int)PInvoke.INFOTIPSIZE];
+                descriptionBuffer.Clear();
                 fixed (char* descriptionBufferPtr = descriptionBuffer)
                 {
                     shellLink.GetDescription(descriptionBufferPtr, (int)PInvoke.INFOTIPSIZE);
