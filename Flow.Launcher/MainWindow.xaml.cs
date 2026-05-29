@@ -1124,7 +1124,7 @@ namespace Flow.Launcher
             _progressBarStoryboard = new Storyboard();
 
             var animationDuration = new Duration(TimeSpan.FromMilliseconds(1600));
-            var progressBarLength = 100;
+            var progressBarLength = ProgressBar.X2 - ProgressBar.X1;
 
             var lineEndAnimation = new DoubleAnimation(ProgressBar.X2, ActualWidth + progressBarLength, animationDuration);
             var lineStartAnimation = new DoubleAnimation(ProgressBar.X1, ActualWidth, animationDuration);
