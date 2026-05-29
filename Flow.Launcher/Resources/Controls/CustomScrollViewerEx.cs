@@ -130,7 +130,7 @@ namespace Flow.Launcher.Resources.Controls
                     e.Handled = true;
                 }
 
-                if (ActualHeight <= 0)
+                if (ActualWidth <= 0)
                     return;
 
                 var WheelChange = e.Delta * (ViewportWidth / 1.5) / ActualWidth;
