@@ -1142,7 +1142,6 @@ namespace Flow.Launcher
             lineEndAnimation.Freeze();
             lineStartAnimation.Freeze();
 
-            ProgressBar.SetResourceReference(StyleProperty, "PendingLineStyle");
             ProgressBar.IsVisibleChanged -= ProgressBar_IsVisibleChanged;
             ProgressBar.IsVisibleChanged += ProgressBar_IsVisibleChanged;
 
