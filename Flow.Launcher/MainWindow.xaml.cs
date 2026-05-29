@@ -1129,13 +1129,13 @@ namespace Flow.Launcher
             var lineEndAnimation = new DoubleAnimation
             {
                 From = ProgressBar.X2,
-                To = ActualWidth + progressBarLength,
+                To = ProgressBar.ActualWidth + progressBarLength,
                 Duration = animationDuration
             };
             var lineStartAnimation = new DoubleAnimation
             {
                 From = ProgressBar.X1,
-                To = ActualWidth,
+                To = ProgressBar.ActualWidth,
                 Duration = animationDuration
             };
             
