@@ -75,6 +75,7 @@ namespace Flow.Launcher
         // Window Animation
         private const double DefaultRightMargin = 66; //* this value from base.xaml
         private bool _isClockPanelAnimating = false;
+        private Storyboard _progressBarStoryboard;
 
         // IDisposable
         private bool _disposed = false;
@@ -1120,7 +1121,7 @@ namespace Flow.Launcher
 
         private void InitProgressbarAnimation()
         {
-            var progressBarStoryBoard = new Storyboard();
+            _progressBarStoryboard = new Storyboard();
 
             var da = new DoubleAnimation(ProgressBar.X2, ActualWidth + 100,
                 new Duration(new TimeSpan(0, 0, 0, 0, 1600)));
@@ -1128,41 +1129,35 @@ namespace Flow.Launcher
                 new Duration(new TimeSpan(0, 0, 0, 0, 1600)));
             Storyboard.SetTargetProperty(da, new PropertyPath("(Line.X2)"));
             Storyboard.SetTargetProperty(da1, new PropertyPath("(Line.X1)"));
-            progressBarStoryBoard.Children.Add(da);
-            progressBarStoryBoard.Children.Add(da1);
-            progressBarStoryBoard.RepeatBehavior = RepeatBehavior.Forever;
+            _progressBarStoryboard.Children.Add(da);
+            _progressBarStoryboard.Children.Add(da1);
+            _progressBarStoryboard.RepeatBehavior = RepeatBehavior.Forever;
 
             da.Freeze();
             da1.Freeze();
 
-            const string progressBarAnimationName = "ProgressBarAnimation";
-            var beginStoryboard = new BeginStoryboard
-            {
-                Name = progressBarAnimationName, Storyboard = progressBarStoryBoard
-            };
-
-            var stopStoryboard = new StopStoryboard()
-            {
-                BeginStoryboardName = progressBarAnimationName
-            };
-
-            var trigger = new Trigger
-            {
-                Property = VisibilityProperty, Value = Visibility.Visible
-            };
-            trigger.EnterActions.Add(beginStoryboard);
-            trigger.ExitActions.Add(stopStoryboard);
-
-            var progressStyle = new Style(typeof(Line))
-            {
-                BasedOn = FindResource("PendingLineStyle") as Style
-            };
-            progressStyle.RegisterName(progressBarAnimationName, beginStoryboard);
-            progressStyle.Triggers.Add(trigger);
-
-            ProgressBar.Style = progressStyle;
+            ProgressBar.SetResourceReference(StyleProperty, "PendingLineStyle");
+            ProgressBar.IsVisibleChanged -= ProgressBar_IsVisibleChanged;
+            ProgressBar.IsVisibleChanged += ProgressBar_IsVisibleChanged;
 
             _viewModel.ProgressBarVisibility = Visibility.Hidden;
+        }
+
+        private void ProgressBar_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (_progressBarStoryboard == null)
+            {
+                return;
+            }
+
+            if (ProgressBar.Visibility == Visibility.Visible)
+            {
+                _progressBarStoryboard.Begin(ProgressBar, true);
+            }
+            else
+            {
+                _progressBarStoryboard.Stop(ProgressBar);
+            }
         }
 
         private void WindowAnimation()
