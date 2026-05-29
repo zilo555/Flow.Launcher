@@ -1126,8 +1126,18 @@ namespace Flow.Launcher
             var animationDuration = new Duration(TimeSpan.FromMilliseconds(1600));
             var progressBarLength = ProgressBar.X2 - ProgressBar.X1;
 
-            var lineEndAnimation = new DoubleAnimation(ProgressBar.X2, ActualWidth + progressBarLength, animationDuration);
-            var lineStartAnimation = new DoubleAnimation(ProgressBar.X1, ActualWidth, animationDuration);
+            var lineEndAnimation = new DoubleAnimation
+            {
+                From = ProgressBar.X2,
+                To = ActualWidth + progressBarLength,
+                Duration = animationDuration
+            };
+            var lineStartAnimation = new DoubleAnimation
+            {
+                From = ProgressBar.X1,
+                To = ActualWidth,
+                Duration = animationDuration
+            };
             
             Storyboard.SetTarget(lineEndAnimation, ProgressBar);
             Storyboard.SetTargetProperty(lineEndAnimation, new PropertyPath("(Line.X2)"));
