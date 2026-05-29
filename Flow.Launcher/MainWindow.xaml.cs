@@ -1165,7 +1165,7 @@ namespace Flow.Launcher
                 return;
             }
 
-            if (ProgressBar.Visibility == Visibility.Visible)
+            if (ProgressBar.IsVisible)
             {
                 _progressBarStoryboard.Begin(ProgressBar, true);
             }
