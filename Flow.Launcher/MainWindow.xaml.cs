@@ -1123,20 +1123,24 @@ namespace Flow.Launcher
         {
             _progressBarStoryboard = new Storyboard();
 
-            var da = new DoubleAnimation(ProgressBar.X2, ActualWidth + 100,
-                new Duration(new TimeSpan(0, 0, 0, 0, 1600)));
-            var da1 = new DoubleAnimation(ProgressBar.X1, ActualWidth + 0,
-                new Duration(new TimeSpan(0, 0, 0, 0, 1600)));
-            Storyboard.SetTarget(da, ProgressBar);
-            Storyboard.SetTargetProperty(da, new PropertyPath("(Line.X2)"));
-            Storyboard.SetTarget(da1, ProgressBar);
-            Storyboard.SetTargetProperty(da1, new PropertyPath("(Line.X1)"));
-            _progressBarStoryboard.Children.Add(da);
-            _progressBarStoryboard.Children.Add(da1);
+            var animationDuration = new Duration(TimeSpan.FromMilliseconds(1600));
+            var progressBarLength = 100;
+
+            var lineEndAnimation = new DoubleAnimation(ProgressBar.X2, ActualWidth + progressBarLength, animationDuration);
+            var lineStartAnimation = new DoubleAnimation(ProgressBar.X1, ActualWidth, animationDuration);
+            
+            Storyboard.SetTarget(lineEndAnimation, ProgressBar);
+            Storyboard.SetTargetProperty(lineEndAnimation, new PropertyPath("(Line.X2)"));
+            
+            Storyboard.SetTarget(lineStartAnimation, ProgressBar);
+            Storyboard.SetTargetProperty(lineStartAnimation, new PropertyPath("(Line.X1)"));
+            
+            _progressBarStoryboard.Children.Add(lineEndAnimation);
+            _progressBarStoryboard.Children.Add(lineStartAnimation);
             _progressBarStoryboard.RepeatBehavior = RepeatBehavior.Forever;
 
-            da.Freeze();
-            da1.Freeze();
+            lineEndAnimation.Freeze();
+            lineStartAnimation.Freeze();
 
             ProgressBar.SetResourceReference(StyleProperty, "PendingLineStyle");
             ProgressBar.IsVisibleChanged -= ProgressBar_IsVisibleChanged;
