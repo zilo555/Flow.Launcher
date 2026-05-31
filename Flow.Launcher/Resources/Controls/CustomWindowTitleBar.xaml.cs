@@ -192,6 +192,11 @@ namespace Flow.Launcher.Resources.Controls
         {
             MinimizeButtonClick?.Invoke(this, e);
 
+            if (e.Handled)
+            {
+                return;
+            }
+
             if (_hostWindow == null)
             {
                 return;
@@ -203,6 +208,11 @@ namespace Flow.Launcher.Resources.Controls
         private void MaximizeRestoreButton_OnClick(object sender, RoutedEventArgs e)
         {
             MaximizeRestoreButtonClick?.Invoke(this, e);
+
+            if (e.Handled)
+            {
+                return;
+            }
 
             if (_hostWindow == null)
             {
@@ -219,6 +229,11 @@ namespace Flow.Launcher.Resources.Controls
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
             CloseButtonClick?.Invoke(this, e);
+
+            if (e.Handled)
+            {
+                return;
+            }
 
             if (_hostWindow == null)
             {
