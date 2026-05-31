@@ -6,6 +6,19 @@ namespace Flow.Launcher.Resources.Controls
 {
     public partial class CustomWindowTitleBar : UserControl
     {
+        public sealed class WindowStateChangedEventArgs : EventArgs
+        {
+            public WindowStateChangedEventArgs(WindowState previousState, WindowState currentState)
+            {
+                PreviousState = previousState;
+                CurrentState = currentState;
+            }
+
+            public WindowState PreviousState { get; }
+
+            public WindowState CurrentState { get; }
+        }
+
         public static readonly DependencyProperty IconSourceProperty =
             DependencyProperty.Register(
                 name: nameof(IconSource),
@@ -49,6 +62,7 @@ namespace Flow.Launcher.Resources.Controls
         public event RoutedEventHandler MinimizeButtonClick;
         public event RoutedEventHandler MaximizeRestoreButtonClick;
         public event RoutedEventHandler CloseButtonClick;
+        public event EventHandler<WindowStateChangedEventArgs> LastNonMinimizedWindowStateChanged;
 
         private Window _hostWindow;
         private WindowState _lastNonMinimizedWindowState = WindowState.Normal;
@@ -90,6 +104,10 @@ namespace Flow.Launcher.Resources.Controls
             set => SetValue(CloseButtonVisibilityProperty, value);
         }
 
+        public WindowState LastNonMinimizedWindowState {
+            get => _lastNonMinimizedWindowState;
+        }
+
         private void CustomWindowTitleBar_Loaded(object sender, RoutedEventArgs e)
         {
             AttachToHostWindow();
@@ -119,7 +137,7 @@ namespace Flow.Launcher.Resources.Controls
 
             if (_hostWindow.WindowState != WindowState.Minimized)
             {
-                _lastNonMinimizedWindowState = _hostWindow.WindowState;
+                UpdateLastNonMinimizedWindowState(_hostWindow.WindowState);
             }
 
             _hostWindow.StateChanged += HostWindow_StateChanged;
@@ -149,7 +167,7 @@ namespace Flow.Launcher.Resources.Controls
 
             if (_hostWindow.WindowState != WindowState.Minimized)
             {
-                _lastNonMinimizedWindowState = _hostWindow.WindowState;
+                UpdateLastNonMinimizedWindowState(_hostWindow.WindowState);
             }
 
             RefreshMaximizeRestoreButton();
@@ -172,6 +190,20 @@ namespace Flow.Launcher.Resources.Controls
         private void HostWindow_Closed(object sender, EventArgs e)
         {
             DetachFromHostWindow();
+        }
+
+        private void UpdateLastNonMinimizedWindowState(WindowState state)
+        {
+            if (state == WindowState.Minimized || _lastNonMinimizedWindowState == state)
+            {
+                return;
+            }
+
+            var previousState = _lastNonMinimizedWindowState;
+            _lastNonMinimizedWindowState = state;
+            LastNonMinimizedWindowStateChanged?.Invoke(this,
+                new WindowStateChangedEventArgs(previousState, _lastNonMinimizedWindowState)
+            );
         }
 
         private void RefreshMaximizeRestoreButton()
