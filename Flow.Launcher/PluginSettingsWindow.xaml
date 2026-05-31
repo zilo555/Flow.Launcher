@@ -8,11 +8,8 @@
     Height="Auto"
     MinWidth="600"
     MinHeight="300"
-    Loaded="OnLoaded"
     ResizeMode="CanResize"
     SnapsToDevicePixels="True"
-    StateChanged="Window_StateChanged"
-    Activated="Window_Activated"
     UseLayoutRounding="True"
     WindowStartupLocation="CenterScreen">
     <WindowChrome.WindowChrome>
@@ -57,12 +54,8 @@
             </Grid.RowDefinitions>
 
             <controls:CustomWindowTitleBar
-                x:Name="CustomWindowTitleBar"
                 Grid.Row="0"
-                CloseButtonClick="OnCloseButtonClick"
-                IconSource="/Images/app.png"
-                MaximizeRestoreButtonClick="OnMaximizeRestoreButtonClick"
-                MinimizeButtonClick="OnMinimizeButtonClick" />
+                IconSource="/Images/app.png" />
 
             <ScrollViewer
                 Grid.Row="1"
