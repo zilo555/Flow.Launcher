@@ -31,6 +31,7 @@
             Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Title}" />
 
         <Button
+            x:Name="MinimizeButton"
             Grid.Column="2"
             Click="MinimizeButton_OnClick"
             RenderOptions.EdgeMode="Aliased"
@@ -98,6 +99,7 @@
             </Path>
         </Button>
         <Button
+            x:Name="CloseButton"
             Grid.Column="4"
             Click="CloseButton_OnClick"
             Style="{StaticResource TitleBarCloseButtonStyle}">

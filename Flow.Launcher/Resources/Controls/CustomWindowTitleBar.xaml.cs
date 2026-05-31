@@ -27,6 +27,30 @@ namespace Flow.Launcher.Resources.Controls
                 typeMetadata: new PropertyMetadata(defaultValue: "/Images/app.png")
             );
 
+        public static readonly DependencyProperty ShowMinimizeButtonProperty =
+            DependencyProperty.Register(
+                name: nameof(ShowMinimizeButton),
+                propertyType: typeof(bool),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
+            );
+
+        public static readonly DependencyProperty ShowMaximizeRestoreButtonProperty =
+            DependencyProperty.Register(
+                name: nameof(ShowMaximizeRestoreButton),
+                propertyType: typeof(bool),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
+            );
+
+        public static readonly DependencyProperty ShowCloseButtonProperty =
+            DependencyProperty.Register(
+                name: nameof(ShowCloseButton),
+                propertyType: typeof(bool),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
+            );
+
         public event RoutedEventHandler MinimizeButtonClick;
         public event RoutedEventHandler MaximizeRestoreButtonClick;
         public event RoutedEventHandler CloseButtonClick;
@@ -34,6 +58,11 @@ namespace Flow.Launcher.Resources.Controls
 
         private Window _hostWindow;
         private WindowState _lastNonMinimizedWindowState = WindowState.Normal;
+
+        private Button MinimizeButtonElement => FindName("MinimizeButton") as Button;
+        private Button MaximizeButtonElement => FindName("MaximizeButton") as Button;
+        private Button RestoreButtonElement => FindName("RestoreButton") as Button;
+        private Button CloseButtonElement => FindName("CloseButton") as Button;
 
         public CustomWindowTitleBar()
         {
@@ -48,6 +77,24 @@ namespace Flow.Launcher.Resources.Controls
             set => SetValue(IconSourceProperty, value);
         }
 
+        public bool ShowMinimizeButton
+        {
+            get => (bool)GetValue(ShowMinimizeButtonProperty);
+            set => SetValue(ShowMinimizeButtonProperty, value);
+        }
+
+        public bool ShowMaximizeRestoreButton
+        {
+            get => (bool)GetValue(ShowMaximizeRestoreButtonProperty);
+            set => SetValue(ShowMaximizeRestoreButtonProperty, value);
+        }
+
+        public bool ShowCloseButton
+        {
+            get => (bool)GetValue(ShowCloseButtonProperty);
+            set => SetValue(ShowCloseButtonProperty, value);
+        }
+
         public WindowState LastNonMinimizedWindowState {
             get => _lastNonMinimizedWindowState;
         }
@@ -55,7 +102,15 @@ namespace Flow.Launcher.Resources.Controls
         private void CustomWindowTitleBar_Loaded(object sender, RoutedEventArgs e)
         {
             AttachToHostWindow();
-            RefreshMaximizeRestoreButton();
+            RefreshButtonVisibility();
+        }
+
+        private static void OnButtonVisibilityOptionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomWindowTitleBar control)
+            {
+                control.RefreshButtonVisibility();
+            }
         }
 
         private void CustomWindowTitleBar_Unloaded(object sender, RoutedEventArgs e)
@@ -114,7 +169,7 @@ namespace Flow.Launcher.Resources.Controls
                 UpdateLastNonMinimizedWindowState(_hostWindow.WindowState);
             }
 
-            RefreshMaximizeRestoreButton();
+            RefreshButtonVisibility();
         }
 
         private void HostWindow_Activated(object sender, EventArgs e)
@@ -150,22 +205,53 @@ namespace Flow.Launcher.Resources.Controls
             );
         }
 
-        private void RefreshMaximizeRestoreButton()
+        private void RefreshButtonVisibility()
         {
+            var minimizeButton = MinimizeButtonElement;
+            if (minimizeButton != null)
+            {
+                minimizeButton.Visibility = ShowMinimizeButton ? Visibility.Visible : Visibility.Hidden;
+            }
+
+            var closeButton = CloseButtonElement;
+            if (closeButton != null)
+            {
+                closeButton.Visibility = ShowCloseButton ? Visibility.Visible : Visibility.Hidden;
+            }
+
+            var maximizeButton = MaximizeButtonElement;
+            var restoreButton = RestoreButtonElement;
+            if (maximizeButton == null || restoreButton == null)
+            {
+                return;
+            }
+
+            if (!ShowMaximizeRestoreButton)
+            {
+                maximizeButton.Visibility = Visibility.Hidden;
+                restoreButton.Visibility = Visibility.Hidden;
+                return;
+            }
+
             if (_hostWindow?.WindowState == WindowState.Maximized)
             {
-                MaximizeButton.Visibility = Visibility.Hidden;
-                RestoreButton.Visibility = Visibility.Visible;
+                maximizeButton.Visibility = Visibility.Hidden;
+                restoreButton.Visibility = Visibility.Visible;
             }
             else
             {
-                MaximizeButton.Visibility = Visibility.Visible;
-                RestoreButton.Visibility = Visibility.Hidden;
+                maximizeButton.Visibility = Visibility.Visible;
+                restoreButton.Visibility = Visibility.Hidden;
             }
         }
 
         private void MinimizeButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (!ShowMinimizeButton)
+            {
+                return;
+            }
+
             MinimizeButtonClick?.Invoke(this, e);
 
             if (e.Handled)
@@ -183,6 +269,11 @@ namespace Flow.Launcher.Resources.Controls
 
         private void MaximizeRestoreButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (!ShowMaximizeRestoreButton)
+            {
+                return;
+            }
+
             MaximizeRestoreButtonClick?.Invoke(this, e);
 
             if (e.Handled)
@@ -204,6 +295,11 @@ namespace Flow.Launcher.Resources.Controls
 
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
+            if (!ShowCloseButton)
+            {
+                return;
+            }
+
             CloseButtonClick?.Invoke(this, e);
 
             if (e.Handled)
