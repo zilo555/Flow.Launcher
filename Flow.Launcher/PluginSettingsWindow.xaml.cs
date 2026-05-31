@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Flow.Launcher.Core.Plugin;
 using Flow.Launcher.Infrastructure.UserSettings;
+using Flow.Launcher.Resources.Controls;
 using Flow.Launcher.ViewModel;
 using iNKORE.UI.WPF.Modern.Controls;
 
@@ -115,15 +116,20 @@ public partial class PluginSettingsWindow
 
     private void RefreshMaximizeRestoreButton()
     {
+        if (FindName("CustomWindowTitleBar") is not CustomWindowTitleBar titleBar)
+        {
+            return;
+        }
+
         if (WindowState == WindowState.Maximized)
         {
-            MaximizeButton.Visibility = Visibility.Hidden;
-            RestoreButton.Visibility = Visibility.Visible;
+            titleBar.MaximizeButtonVisibility = Visibility.Hidden;
+            titleBar.RestoreButtonVisibility = Visibility.Visible;
         }
         else
         {
-            MaximizeButton.Visibility = Visibility.Visible;
-            RestoreButton.Visibility = Visibility.Hidden;
+            titleBar.MaximizeButtonVisibility = Visibility.Visible;
+            titleBar.RestoreButtonVisibility = Visibility.Hidden;
         }
     }
 
