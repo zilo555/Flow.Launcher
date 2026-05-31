@@ -131,7 +131,10 @@ namespace Flow.Launcher.Resources.Controls
                 }
 
                 if (ActualWidth <= 0)
+                {
+                    ScrollViewerBehavior.SetIsAnimating(this, false);
                     return;
+                }
 
                 var WheelChange = e.Delta * (ViewportWidth / 1.5) / ActualWidth;
                 var newOffset = LastHorizontalLocation - WheelChange;
