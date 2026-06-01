@@ -259,25 +259,25 @@ namespace Flow.Launcher.Resources.Controls
             var iconImage = IconImageElement;
             if (iconImage != null)
             {
-                iconImage.Visibility = ShowIcon ? Visibility.Visible : Visibility.Hidden;
+                iconImage.Visibility = ShowIcon ? Visibility.Visible : Visibility.Collapsed;
             }
 
             var titleTextBlock = TitleTextBlockElement;
             if (titleTextBlock != null)
             {
-                titleTextBlock.Visibility = ShowTitle ? Visibility.Visible : Visibility.Hidden;
+                titleTextBlock.Visibility = ShowTitle ? Visibility.Visible : Visibility.Collapsed;
             }
 
             var minimizeButton = MinimizeButtonElement;
             if (minimizeButton != null)
             {
-                minimizeButton.Visibility = ShowMinimizeButton ? Visibility.Visible : Visibility.Hidden;
+                minimizeButton.Visibility = ShowMinimizeButton ? Visibility.Visible : Visibility.Collapsed;
             }
 
             var closeButton = CloseButtonElement;
             if (closeButton != null)
             {
-                closeButton.Visibility = ShowCloseButton ? Visibility.Visible : Visibility.Hidden;
+                closeButton.Visibility = ShowCloseButton ? Visibility.Visible : Visibility.Collapsed;
             }
 
             var maximizeButton = MaximizeButtonElement;
@@ -289,20 +289,20 @@ namespace Flow.Launcher.Resources.Controls
 
             if (!ShowMaximizeRestoreButton)
             {
-                maximizeButton.Visibility = Visibility.Hidden;
-                restoreButton.Visibility = Visibility.Hidden;
+                maximizeButton.Visibility = Visibility.Collapsed;
+                restoreButton.Visibility = Visibility.Collapsed;
                 return;
             }
 
             if (_hostWindow?.WindowState == WindowState.Maximized)
             {
-                maximizeButton.Visibility = Visibility.Hidden;
+                maximizeButton.Visibility = Visibility.Collapsed;
                 restoreButton.Visibility = Visibility.Visible;
             }
             else
             {
                 maximizeButton.Visibility = Visibility.Visible;
-                restoreButton.Visibility = Visibility.Hidden;
+                restoreButton.Visibility = Visibility.Collapsed;
             }
         }
 

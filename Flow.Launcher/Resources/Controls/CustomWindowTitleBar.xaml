@@ -82,7 +82,7 @@
             Grid.Column="3"
             Click="MaximizeRestoreButton_OnClick"
             Style="{StaticResource TitleBarButtonStyle}"
-            Visibility="Hidden">
+            Visibility="Collapsed">
             <Path
                 Width="46"
                 Height="32"
