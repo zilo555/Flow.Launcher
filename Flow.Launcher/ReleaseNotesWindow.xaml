@@ -35,40 +35,24 @@
     <Grid>
         <Border Style="{StaticResource WindowMainPanelStyle}">
             <Grid Background="{DynamicResource Color01B}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="32" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <cc:CustomWindowTitleBar
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="5" />
+                <cc:CustomWindowTitleBar Grid.Row="0" />
 
-                <Grid
+                <ui:HyperlinkButton
                     Grid.Row="1"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="5"
-                    Margin="6 0 18 0">
-                    <ui:HyperlinkButton
-                        x:Name="SeeMore"
-                        Content="{DynamicResource seeMoreReleaseNotes}"
-                        NavigateUri="{Binding ReleaseNotes}" />
-                </Grid>
+                    Margin="6 0 18 0"
+                    x:Name="SeeMore"
+                    Content="{DynamicResource seeMoreReleaseNotes}"
+                    NavigateUri="{Binding ReleaseNotes}" />
 
                 <!--  Do not use scroll function of MarkdownViewer because it does not support smooth scroll  -->
                 <ui:ScrollViewerEx
                     x:Name="MarkdownScrollViewer"
                     Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="5"
                     Height="500"
                     Margin="15 0 0 0"
                     Padding="0 0 15 0"
@@ -100,8 +84,6 @@
                 <!--  Because VerticalAlignment="Stretch" can cause height issue with MarkdownScrollViewer.  -->
                 <Grid
                     Grid.Row="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="5"
                     Margin="15 0 20 0"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"
