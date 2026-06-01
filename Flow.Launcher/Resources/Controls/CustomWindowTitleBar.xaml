@@ -16,6 +16,7 @@
         </Grid.ColumnDefinitions>
 
         <Image
+            x:Name="IconImage"
             Grid.Column="0"
             Width="16"
             Height="16"

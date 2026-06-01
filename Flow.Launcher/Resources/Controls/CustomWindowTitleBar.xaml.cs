@@ -35,6 +35,14 @@ namespace Flow.Launcher.Resources.Controls
                 typeMetadata: new PropertyMetadata(defaultValue: null)
             );
 
+        public static readonly DependencyProperty ShowIconProperty =
+            DependencyProperty.Register(
+                name: nameof(ShowIcon),
+                propertyType: typeof(bool),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
+            );
+
         public static readonly DependencyProperty ShowTitleProperty =
             DependencyProperty.Register(
                 name: nameof(ShowTitle),
@@ -79,6 +87,7 @@ namespace Flow.Launcher.Resources.Controls
         private Button MaximizeButtonElement => FindName("MaximizeButton") as Button;
         private Button RestoreButtonElement => FindName("RestoreButton") as Button;
         private Button CloseButtonElement => FindName("CloseButton") as Button;
+        private Image IconImageElement => FindName("IconImage") as Image;
         private TextBlock TitleTextBlockElement => FindName("TitleTextBlock") as TextBlock;
 
         public CustomWindowTitleBar()
@@ -98,6 +107,12 @@ namespace Flow.Launcher.Resources.Controls
         {
             get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
+        }
+
+        public bool ShowIcon
+        {
+            get => (bool)GetValue(ShowIconProperty);
+            set => SetValue(ShowIconProperty, value);
         }
 
         public bool ShowTitle
@@ -241,6 +256,12 @@ namespace Flow.Launcher.Resources.Controls
 
         private void UpdateElementsVisibility()
         {
+            var iconImage = IconImageElement;
+            if (iconImage != null)
+            {
+                iconImage.Visibility = ShowIcon ? Visibility.Visible : Visibility.Hidden;
+            }
+
             var titleTextBlock = TitleTextBlockElement;
             if (titleTextBlock != null)
             {
