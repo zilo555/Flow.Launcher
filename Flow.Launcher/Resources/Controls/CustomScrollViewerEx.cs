@@ -87,6 +87,9 @@ namespace Flow.Launcher.Resources.Controls
         /// <inheritdoc/>
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
+            if (ActualHeight <= 0)
+                return;
+
             var Direction = GetDirection();
             ScrollViewerBehavior.SetIsAnimating(this, true);
 
@@ -96,9 +99,6 @@ namespace Flow.Launcher.Resources.Controls
                 {
                     e.Handled = true;
                 }
-
-                if (ActualHeight <= 0)
-                    return;
 
                 var WheelChange = e.Delta * (ViewportHeight / 1.5) / ActualHeight;
                 var newOffset = LastVerticalLocation - WheelChange;
@@ -128,12 +128,6 @@ namespace Flow.Launcher.Resources.Controls
                 if (ScrollableWidth > 0)
                 {
                     e.Handled = true;
-                }
-
-                if (ActualWidth <= 0)
-                {
-                    ScrollViewerBehavior.SetIsAnimating(this, false);
-                    return;
                 }
 
                 var WheelChange = e.Delta * (ViewportWidth / 1.5) / ActualWidth;
