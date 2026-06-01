@@ -1,11 +1,15 @@
 using System;
 using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Flow.Launcher.Resources.Controls
 {
     public partial class CustomWindowTitleBar : UserControl
     {
+        private static readonly ImageSource DefaultWindowIcon = CreateDefaultWindowIcon();
+
         public sealed class WindowStateChangedEventArgs : EventArgs
         {
             public WindowStateChangedEventArgs(WindowState previousState, WindowState currentState)
@@ -22,9 +26,9 @@ namespace Flow.Launcher.Resources.Controls
         public static readonly DependencyProperty IconSourceProperty =
             DependencyProperty.Register(
                 name: nameof(IconSource),
-                propertyType: typeof(string),
+                propertyType: typeof(ImageSource),
                 ownerType: typeof(CustomWindowTitleBar),
-                typeMetadata: new PropertyMetadata(defaultValue: "/Images/app.png")
+                typeMetadata: new PropertyMetadata(defaultValue: null)
             );
 
         public static readonly DependencyProperty TitleProperty =
@@ -97,9 +101,9 @@ namespace Flow.Launcher.Resources.Controls
             Unloaded += CustomWindowTitleBar_Unloaded;
         }
         
-        public string IconSource
+        public ImageSource IconSource
         {
-            get => (string)GetValue(IconSourceProperty);
+            get => (ImageSource)GetValue(IconSourceProperty);
             set => SetValue(IconSourceProperty, value);
         }
 
@@ -176,6 +180,11 @@ namespace Flow.Launcher.Resources.Controls
             if (_hostWindow == null)
             {
                 return;
+            }
+
+            if (IconSource is null)
+            {
+                IconSource = _hostWindow.Icon ?? DefaultWindowIcon;
             }
 
             if (Title is null && !string.IsNullOrEmpty(_hostWindow.Title))
@@ -374,6 +383,16 @@ namespace Flow.Launcher.Resources.Controls
             }
 
             _hostWindow.Close();
+        }
+
+        private static ImageSource CreateDefaultWindowIcon()
+        {
+            var icon = new BitmapImage();
+            icon.BeginInit();
+            icon.UriSource = new Uri("/Images/app.png", UriKind.Relative);
+            icon.EndInit();
+            icon.Freeze();
+            return icon;
         }
     }
 }
