@@ -35,6 +35,14 @@ namespace Flow.Launcher.Resources.Controls
                 typeMetadata: new PropertyMetadata(defaultValue: null)
             );
 
+        public static readonly DependencyProperty ShowTitleProperty =
+            DependencyProperty.Register(
+                name: nameof(ShowTitle),
+                propertyType: typeof(bool),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
+            );
+
         public static readonly DependencyProperty ShowMinimizeButtonProperty =
             DependencyProperty.Register(
                 name: nameof(ShowMinimizeButton),
@@ -71,6 +79,7 @@ namespace Flow.Launcher.Resources.Controls
         private Button MaximizeButtonElement => FindName("MaximizeButton") as Button;
         private Button RestoreButtonElement => FindName("RestoreButton") as Button;
         private Button CloseButtonElement => FindName("CloseButton") as Button;
+        private TextBlock TitleTextBlockElement => FindName("TitleTextBlock") as TextBlock;
 
         public CustomWindowTitleBar()
         {
@@ -89,6 +98,12 @@ namespace Flow.Launcher.Resources.Controls
         {
             get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
+        }
+
+        public bool ShowTitle
+        {
+            get => (bool)GetValue(ShowTitleProperty);
+            set => SetValue(ShowTitleProperty, value);
         }
 
         public bool ShowMinimizeButton
@@ -116,14 +131,14 @@ namespace Flow.Launcher.Resources.Controls
         private void CustomWindowTitleBar_Loaded(object sender, RoutedEventArgs e)
         {
             AttachToHostWindow();
-            RefreshButtonVisibility();
+            UpdateElementsVisibility();
         }
 
         private static void OnButtonVisibilityOptionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is CustomWindowTitleBar control)
             {
-                control.RefreshButtonVisibility();
+                control.UpdateElementsVisibility();
             }
         }
 
@@ -188,7 +203,7 @@ namespace Flow.Launcher.Resources.Controls
                 UpdateLastNonMinimizedWindowState(_hostWindow.WindowState);
             }
 
-            RefreshButtonVisibility();
+            UpdateElementsVisibility();
         }
 
         private void HostWindow_Activated(object sender, EventArgs e)
@@ -224,8 +239,14 @@ namespace Flow.Launcher.Resources.Controls
             );
         }
 
-        private void RefreshButtonVisibility()
+        private void UpdateElementsVisibility()
         {
+            var titleTextBlock = TitleTextBlockElement;
+            if (titleTextBlock != null)
+            {
+                titleTextBlock.Visibility = ShowTitle ? Visibility.Visible : Visibility.Hidden;
+            }
+
             var minimizeButton = MinimizeButtonElement;
             if (minimizeButton != null)
             {
