@@ -159,7 +159,19 @@ namespace Flow.Launcher.Infrastructure.UserSettings
         public string ResultSubFontStretch { get; set; }
         public bool UseGlyphIcons { get; set; } = true;
         public bool UseAnimation { get; set; } = true;
-        public bool UseSound { get; set; } = true;
+        private bool _useSound = true;
+        public bool UseSound
+        {
+            get => _useSound;
+            set
+            {
+                if (_useSound != value)
+                {
+                    _useSound = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public double SoundVolume { get; set; } = 50;
         public bool ShowBadges { get; set; } = false;
         public bool ShowBadgesGlobalOnly { get; set; } = false;
@@ -365,7 +377,7 @@ namespace Flow.Launcher.Infrastructure.UserSettings
         /// <summary>
         /// when false Alphabet static service will always return empty results
         /// </summary>
-        private bool _useAlphabet = true;
+        private bool _useAlphabet = false;
         public bool ShouldUsePinyin
         {
             get => _useAlphabet;
