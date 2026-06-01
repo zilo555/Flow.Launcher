@@ -28,7 +28,7 @@
             VerticalAlignment="Center"
             FontSize="12"
             Foreground="{DynamicResource Color05B}"
-            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=Title}" />
+            Text="{Binding Title, RelativeSource={RelativeSource AncestorType={x:Type local:CustomWindowTitleBar}}}" />
 
         <Button
             x:Name="MinimizeButton"

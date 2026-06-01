@@ -27,6 +27,14 @@ namespace Flow.Launcher.Resources.Controls
                 typeMetadata: new PropertyMetadata(defaultValue: "/Images/app.png")
             );
 
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register(
+                name: nameof(Title),
+                propertyType: typeof(string),
+                ownerType: typeof(CustomWindowTitleBar),
+                typeMetadata: new PropertyMetadata(defaultValue: null)
+            );
+
         public static readonly DependencyProperty ShowMinimizeButtonProperty =
             DependencyProperty.Register(
                 name: nameof(ShowMinimizeButton),
@@ -75,6 +83,12 @@ namespace Flow.Launcher.Resources.Controls
         {
             get => (string)GetValue(IconSourceProperty);
             set => SetValue(IconSourceProperty, value);
+        }
+
+        public string Title
+        {
+            get => (string)GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
         }
 
         public bool ShowMinimizeButton
@@ -132,6 +146,11 @@ namespace Flow.Launcher.Resources.Controls
             if (_hostWindow == null)
             {
                 return;
+            }
+
+            if (Title is null && !string.IsNullOrEmpty(_hostWindow.Title))
+            {
+                Title = _hostWindow.Title;
             }
 
             if (_hostWindow.WindowState != WindowState.Minimized)
