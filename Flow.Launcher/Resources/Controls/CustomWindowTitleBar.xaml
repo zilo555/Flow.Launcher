@@ -34,6 +34,7 @@
 
         <Button
             x:Name="MinimizeButton"
+            AutomationProperties.Name="Minimize"
             Grid.Column="2"
             Click="MinimizeButton_OnClick"
             RenderOptions.EdgeMode="Aliased"
@@ -44,6 +45,7 @@
         </Button>
         <Button
             x:Name="MaximizeButton"
+            AutomationProperties.Name="Maximize"
             Grid.Column="3"
             Click="MaximizeRestoreButton_OnClick"
             Style="{StaticResource TitleBarButtonStyle}">
@@ -53,6 +55,7 @@
         </Button>
         <Button
             x:Name="RestoreButton"
+            AutomationProperties.Name="Restore"
             Grid.Column="3"
             Click="MaximizeRestoreButton_OnClick"
             Style="{StaticResource TitleBarButtonStyle}"
@@ -63,6 +66,7 @@
         </Button>
         <Button
             x:Name="CloseButton"
+            AutomationProperties.Name="Close"
             Grid.Column="4"
             Click="CloseButton_OnClick"
             Style="{StaticResource TitleBarCloseButtonStyle}">
