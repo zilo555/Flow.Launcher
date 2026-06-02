@@ -79,9 +79,36 @@ namespace Flow.Launcher.Resources.Controls
                 typeMetadata: new PropertyMetadata(defaultValue: true, propertyChangedCallback: OnButtonVisibilityOptionChanged)
             );
 
+        /// <summary>
+        /// Occurs when the minimize button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// Set <see cref="RoutedEventArgs.Handled"/> to <see langword="true"/> in a subscriber to suppress
+        /// the control's default minimize behavior.
+        /// </remarks>
         public event RoutedEventHandler MinimizeButtonClick;
+
+        /// <summary>
+        /// Occurs when the maximize or restore button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// Set <see cref="RoutedEventArgs.Handled"/> to <see langword="true"/> in a subscriber to suppress
+        /// the control's default maximize/restore toggle behavior.
+        /// </remarks>
         public event RoutedEventHandler MaximizeRestoreButtonClick;
+
+        /// <summary>
+        /// Occurs when the close button is clicked.
+        /// </summary>
+        /// <remarks>
+        /// Set <see cref="RoutedEventArgs.Handled"/> to <see langword="true"/> in a subscriber to suppress
+        /// the control's default host-window close behavior.
+        /// </remarks>
         public event RoutedEventHandler CloseButtonClick;
+
+        /// <summary>
+        /// Occurs when <see cref="LastNonMinimizedWindowState"/> changes.
+        /// </summary>
         public event EventHandler<WindowStateChangedEventArgs> LastNonMinimizedWindowStateChanged;
 
         private Window _hostWindow;
@@ -94,6 +121,9 @@ namespace Flow.Launcher.Resources.Controls
         private Image IconImageElement => FindName("IconImage") as Image;
         private TextBlock TitleTextBlockElement => FindName("TitleTextBlock") as TextBlock;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomWindowTitleBar"/> class.
+        /// </summary>
         public CustomWindowTitleBar()
         {
             InitializeComponent();
@@ -101,48 +131,78 @@ namespace Flow.Launcher.Resources.Controls
             Unloaded += CustomWindowTitleBar_Unloaded;
         }
         
+        /// <summary>
+        /// Gets or sets the icon source shown in the title bar.
+        /// </summary>
+        /// <remarks>
+        /// If unset (<see langword="null"/>), the control falls back to the host window icon, then to the default app icon.
+        /// </remarks>
         public ImageSource IconSource
         {
             get => (ImageSource)GetValue(IconSourceProperty);
             set => SetValue(IconSourceProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets the title text shown in the title bar.
+        /// </summary>
+        /// <remarks>
+        /// If unset (<see langword="null"/>), the control uses the host window title when available.
+        /// </remarks>
         public string Title
         {
             get => (string)GetValue(TitleProperty);
             set => SetValue(TitleProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the window icon is visible.
+        /// </summary>
         public bool ShowIcon
         {
             get => (bool)GetValue(ShowIconProperty);
             set => SetValue(ShowIconProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the title text is visible.
+        /// </summary>
         public bool ShowTitle
         {
             get => (bool)GetValue(ShowTitleProperty);
             set => SetValue(ShowTitleProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the minimize button is visible.
+        /// </summary>
         public bool ShowMinimizeButton
         {
             get => (bool)GetValue(ShowMinimizeButtonProperty);
             set => SetValue(ShowMinimizeButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the maximize/restore button is visible.
+        /// </summary>
         public bool ShowMaximizeRestoreButton
         {
             get => (bool)GetValue(ShowMaximizeRestoreButtonProperty);
             set => SetValue(ShowMaximizeRestoreButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the close button is visible.
+        /// </summary>
         public bool ShowCloseButton
         {
             get => (bool)GetValue(ShowCloseButtonProperty);
             set => SetValue(ShowCloseButtonProperty, value);
         }
 
+        /// <summary>
+        /// Gets the last observed window state that was not minimized.
+        /// </summary>
         public WindowState LastNonMinimizedWindowState {
             get => _lastNonMinimizedWindowState;
         }
@@ -324,6 +384,7 @@ namespace Flow.Launcher.Resources.Controls
 
             MinimizeButtonClick?.Invoke(this, e);
 
+            // External handlers can override the built-in behavior by marking the routed event as handled.
             if (e.Handled)
             {
                 return;
@@ -346,6 +407,7 @@ namespace Flow.Launcher.Resources.Controls
 
             MaximizeRestoreButtonClick?.Invoke(this, e);
 
+            // External handlers can override the built-in behavior by marking the routed event as handled.
             if (e.Handled)
             {
                 return;
@@ -372,6 +434,7 @@ namespace Flow.Launcher.Resources.Controls
 
             CloseButtonClick?.Invoke(this, e);
 
+            // External handlers can override the built-in behavior by marking the routed event as handled.
             if (e.Handled)
             {
                 return;
