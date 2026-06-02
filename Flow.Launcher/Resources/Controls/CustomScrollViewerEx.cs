@@ -17,8 +17,7 @@ namespace Flow.Launcher.Resources.Controls
         public CustomScrollViewerEx()
         {
             Loaded += OnLoaded;
-            var valueSource = DependencyPropertyHelper.GetValueSource(this, AutoPanningMode.IsEnabledProperty)
-                .BaseValueSource;
+            var valueSource = DependencyPropertyHelper.GetValueSource(this, AutoPanningMode.IsEnabledProperty).BaseValueSource;
             if (valueSource == BaseValueSource.Default)
             {
                 AutoPanningMode.SetIsEnabled(this, true);
@@ -45,10 +44,9 @@ namespace Flow.Launcher.Resources.Controls
         #region AutoHideScrollBars
 
         public static readonly DependencyProperty AutoHideScrollBarsProperty =
-            ScrollViewerHelper.AutoHideScrollBarsProperty
-                .AddOwner(
-                    typeof(CustomScrollViewerEx),
-                    new PropertyMetadata(true, OnAutoHideScrollBarsChanged));
+            ScrollViewerHelper.AutoHideScrollBarsProperty.AddOwner(
+                typeof(CustomScrollViewerEx),
+                new PropertyMetadata(true, OnAutoHideScrollBarsChanged));
 
         public bool AutoHideScrollBars
         {
@@ -200,8 +198,7 @@ namespace Flow.Launcher.Resources.Controls
         /// <param name="zoomFactor">A value between MinZoomFactor and MaxZoomFactor that specifies the required target ZoomFactor.</param>
         /// <param name="disableAnimation"><see langword="true"/> to disable zoom/pan animations while changing the view; otherwise, <see langword="false"/>. The default is false.</param>
         /// <returns><see langword="true"/> if the view is changed; otherwise, <see langword="false"/>.</returns>
-        public bool ChangeView(double? horizontalOffset, double? verticalOffset, float? zoomFactor,
-            bool disableAnimation)
+        public bool ChangeView(double? horizontalOffset, double? verticalOffset, float? zoomFactor, bool disableAnimation)
         {
             if (disableAnimation)
             {
