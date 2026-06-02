@@ -30,7 +30,6 @@
         
         <controls:CustomWindowTitleBar
             Grid.Row="0"
-            IconSource="/Images/app_error.png"
             ShowMinimizeButton="False"
             ShowMaximizeRestoreButton="False"
             ShowCloseButton="True" />
