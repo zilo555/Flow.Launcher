@@ -554,6 +554,11 @@ namespace Flow.Launcher.Core.Resource
             ThemeHelper.CopyStyle(windowBorderStyle, newWindowBorderStyle);
 
             // Copy Setters, excluding the Effect setter and updating the Margin setter
+            // Only adjust margin if there's actually a shadow effect to remove,
+            // preventing it from shrinking on repeated calls.
+            bool hasEffect = windowBorderStyle.Setters.OfType<Setter>()
+                .Any(s => s.Property == UIElement.EffectProperty);
+
             foreach (var setterBase in windowBorderStyle.Setters)
             {
                 if (setterBase is Setter setter)
@@ -562,7 +567,7 @@ namespace Flow.Launcher.Core.Resource
                     if (setter.Property == UIElement.EffectProperty) continue;
 
                     // Update Margin by subtracting the extra margin we added for the shadow
-                    if (setter.Property == FrameworkElement.MarginProperty)
+                    if (hasEffect && setter.Property == FrameworkElement.MarginProperty)
                     {
                         var currentMargin = (Thickness)setter.Value;
                         var newMargin = new Thickness(
