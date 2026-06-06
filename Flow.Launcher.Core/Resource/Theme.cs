@@ -643,17 +643,8 @@ namespace Flow.Launcher.Core.Resource
                 // Remove OS minimizing/maximizing animation
                 // Methods.SetWindowAttribute(new WindowInteropHelper(mainWindow).Handle, DWMWINDOWATTRIBUTE.DWMWA_TRANSITIONS_FORCEDISABLED, 3);
 
-                // The timing of adding the shadow effect should vary depending on whether the theme is transparent.
-                if (BlurEnabled)
-                {
-                    AutoDropShadow(useDropShadowEffect);
-                }
                 SetBlurForWindow(_settings.Theme, backdropType);
-
-                if (!BlurEnabled)
-                {
-                    AutoDropShadow(useDropShadowEffect);
-                }
+                AutoDropShadow(useDropShadowEffect);
             }, DispatcherPriority.Render);
         }
 
@@ -747,10 +738,11 @@ namespace Flow.Launcher.Core.Resource
             {
                 if (BlurEnabled && Win32Helper.IsBackdropSupported())
                 {
-                    // For themes with blur enabled, the window border is rendered by the system,
-                    // so we set corner preference to round and remove drop shadow effect to avoid rendering issues.
+                    // Blur themes: DWM handles corners. Clear any stale directly-set
+                    // resource so the merged dictionary entry (from SetBlurForWindow) wins.
                     SetWindowCornerPreference("Round");
-                    RemoveDropShadowEffectFromCurrentTheme();
+                    if (Application.Current.Resources.Contains("WindowBorderStyle"))
+                        Application.Current.Resources.Remove("WindowBorderStyle");
                 }
                 else
                 {
