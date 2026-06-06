@@ -718,12 +718,26 @@ namespace Flow.Launcher.Core.Resource
                 // Apply the blur effect
                 Win32Helper.DWMSetBackdropForWindow(mainWindow, backdropType);
                 ColorizeWindow(theme, backdropType);
+
+                // DWM renders rounded corners for backdrop windows
+                SetWindowCornerPreference("Round");
+
+                // Clear any stale directly-set WindowBorderStyle that might shadow
+                // the merged dictionary entry we just modified above.
+                if (Application.Current.Resources.Contains("WindowBorderStyle"))
+                    Application.Current.Resources.Remove("WindowBorderStyle");
+
+                // For blur themes the resize border defaults to the system thickness.
+                SetResizeBoarderThickness(null);
             }
             else
             {
                 // Apply default style when Blur is disabled
                 Win32Helper.DWMSetBackdropForWindow(mainWindow, BackdropTypes.None);
                 ColorizeWindow(theme, backdropType);
+
+                // Non-blur themes use the default window corner preference
+                SetWindowCornerPreference("Default");
             }
 
             UpdateResourceDictionary(dict);
@@ -731,28 +745,15 @@ namespace Flow.Launcher.Core.Resource
 
         private void AutoDropShadow(bool useDropShadowEffect)
         {
+            if (BlurEnabled)
+                return; // Blur themes have no drop shadow effect
+
             if (useDropShadowEffect)
             {
-                if (BlurEnabled && Win32Helper.IsBackdropSupported())
-                {
-                    // Blur themes: DWM handles corners. Clear any stale directly-set
-                    // resource so the merged dictionary entry (from SetBlurForWindow) wins.
-                    SetWindowCornerPreference("Round");
-                    if (Application.Current.Resources.Contains("WindowBorderStyle"))
-                        Application.Current.Resources.Remove("WindowBorderStyle");
-                    SetResizeBoarderThickness(null);
-                }
-                else
-                {
-                    // For themes without blur, we set corner preference to default and add drop shadow effect.
-                    SetWindowCornerPreference("Default");
-                    AddDropShadowEffectToCurrentTheme();
-                }
+                AddDropShadowEffectToCurrentTheme();
             }
             else
             {
-                // When drop shadow effect is disabled, we set corner preference to default and remove drop shadow effect.
-                SetWindowCornerPreference("Default");
                 RemoveDropShadowEffectFromCurrentTheme();
             }
         }
