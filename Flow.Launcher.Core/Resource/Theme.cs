@@ -743,6 +743,7 @@ namespace Flow.Launcher.Core.Resource
                     SetWindowCornerPreference("Round");
                     if (Application.Current.Resources.Contains("WindowBorderStyle"))
                         Application.Current.Resources.Remove("WindowBorderStyle");
+                    SetResizeBoarderThickness(null);
                 }
                 else
                 {
