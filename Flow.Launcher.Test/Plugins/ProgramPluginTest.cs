@@ -15,6 +15,10 @@ using UwpApp = Flow.Launcher.Plugin.Program.Programs.UWPApp;
 
 namespace Flow.Launcher.Test.Plugins
 {
+    // TODO: Program.Main relies on static state (cache, locks, program lists, settings),
+    // making it unsafe for parallel test execution and forcing these reflection workarounds. 
+    // There's no better option right now,
+    // but this should be replaced once dependency injection is added.
     [TestFixture]
     public class ProgramPluginTest
     {
