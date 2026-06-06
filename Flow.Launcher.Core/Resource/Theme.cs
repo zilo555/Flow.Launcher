@@ -640,9 +640,6 @@ namespace Flow.Launcher.Core.Resource
                 // Get the actual backdrop type and drop shadow effect settings
                 var (backdropType, useDropShadowEffect) = GetActualValue();
 
-                // Remove OS minimizing/maximizing animation
-                // Methods.SetWindowAttribute(new WindowInteropHelper(mainWindow).Handle, DWMWINDOWATTRIBUTE.DWMWA_TRANSITIONS_FORCEDISABLED, 3);
-
                 SetBlurForWindow(_settings.Theme, backdropType);
                 AutoDropShadow(useDropShadowEffect);
             }, DispatcherPriority.Render);
