@@ -296,14 +296,13 @@ namespace Flow.Launcher.Infrastructure
             if (windowClass is WINDOW_CLASS_PROGMAN or WINDOW_CLASS_WORKERW)
             {
                 var hWndDesktop = PInvoke.FindWindowEx(hWnd, HWND.Null, "SHELLDLL_DefView", null);
-                if (hWndDesktop == HWND.Null)
-                {
-                    return false;
-                }
-                hWndDesktop = PInvoke.FindWindowEx(hWndDesktop, HWND.Null, "SysListView32", "FolderView");
                 if (hWndDesktop != HWND.Null)
                 {
-                    return false;
+                    hWndDesktop = PInvoke.FindWindowEx(hWndDesktop, HWND.Null, "SysListView32", "FolderView");
+                    if (hWndDesktop != HWND.Null)
+                    {
+                        return false;
+                    }
                 }
             }
 
