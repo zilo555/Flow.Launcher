@@ -452,7 +452,7 @@ namespace Flow.Launcher.Resources.Controls
         {
             var icon = new BitmapImage();
             icon.BeginInit();
-            icon.UriSource = new Uri("/Images/app.png", UriKind.Relative);
+            icon.UriSource = new Uri("Images/app.png", UriKind.Relative);
             icon.EndInit();
             icon.Freeze();
             return icon;

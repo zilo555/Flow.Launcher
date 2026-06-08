@@ -13,7 +13,7 @@
     x:ClassModifier="internal"
     Background="{DynamicResource PopuBGColor}"
     Foreground="{DynamicResource PopupTextColor}"
-    Icon="/Images/app_error.png"
+    Icon="Images/app_error.png"
     ResizeMode="NoResize"
     Topmost="True"
     WindowStartupLocation="CenterScreen"
