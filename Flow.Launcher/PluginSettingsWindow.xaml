@@ -53,9 +53,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <controls:CustomWindowTitleBar
-                Grid.Row="0"
-                IconSource="Images/app.png" />
+            <controls:CustomWindowTitleBar Grid.Row="0"/>
 
             <ScrollViewer
                 Grid.Row="1"
