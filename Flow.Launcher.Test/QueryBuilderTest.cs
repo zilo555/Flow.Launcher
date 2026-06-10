@@ -49,6 +49,27 @@ namespace Flow.Launcher.Test
         }
 
         [Test]
+        public void SharedKeywordOneDisabledPluginQueryTest()
+        {
+            var nonGlobalPlugins = new Dictionary<string, List<PluginPair>>
+            {
+                { ">", new List<PluginPair>()
+                    {
+                        new() { Metadata = new PluginMetadata { ActionKeywords = [">"], Disabled = true } },
+                        new() { Metadata = new PluginMetadata { ActionKeywords = [">"] } }
+                    }
+                }
+            };
+
+            Query q = QueryBuilder.Build(">   ping    google.com   -n 20  -6", ">   ping    google.com   -n 20  -6", nonGlobalPlugins);
+
+            ClassicAssert.AreEqual(">   ping    google.com   -n 20  -6", q.TrimmedQuery);
+            ClassicAssert.AreEqual("ping    google.com   -n 20  -6", q.Search, "Search should not start with the ActionKeyword.");
+            ClassicAssert.AreEqual(">", q.ActionKeyword, "ActionKeyword should still match because an enabled plugin shares the keyword.");
+            ClassicAssert.AreEqual(5, q.SearchTerms.Length, "The length of SearchTerms should match.");
+        }
+
+        [Test]
         public void GenericPluginQueryTest()
         {
             Query q = QueryBuilder.Build("file.txt file2 file3", "file.txt file2 file3", []);

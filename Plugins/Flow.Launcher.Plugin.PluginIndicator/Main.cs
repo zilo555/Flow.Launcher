@@ -24,7 +24,8 @@ namespace Flow.Launcher.Plugin.PluginIndicator
 
             var results =
                 from keyword in nonGlobalPlugins.Keys
-                let plugin = nonGlobalPlugins[keyword].Metadata
+                from pluginPair in nonGlobalPlugins[keyword]
+                let plugin = pluginPair.Metadata
                 let keywordSearchResult = Context.API.FuzzySearch(querySearch, keyword)
                 let searchResult = keywordSearchResult.IsSearchPrecisionScoreMet() ? keywordSearchResult : Context.API.FuzzySearch(querySearch, plugin.Name)
                 let score = searchResult.Score
@@ -47,9 +48,9 @@ namespace Flow.Launcher.Plugin.PluginIndicator
             return [.. results];
         }
 
-        private static Dictionary<string, PluginPair> GetNonGlobalPlugins()
+        private static Dictionary<string, List<PluginPair>> GetNonGlobalPlugins()
         {
-            var nonGlobalPlugins = new Dictionary<string, PluginPair>();
+            var nonGlobalPlugins = new Dictionary<string, List<PluginPair>>();
             foreach (var plugin in Context.API.GetAllPlugins())
             {
                 foreach (var actionKeyword in plugin.Metadata.ActionKeywords)
@@ -57,10 +58,12 @@ namespace Flow.Launcher.Plugin.PluginIndicator
                     // Skip global keywords
                     if (actionKeyword == Plugin.Query.GlobalPluginWildcardSign) continue;
 
-                    // Skip dulpicated keywords
-                    if (nonGlobalPlugins.ContainsKey(actionKeyword)) continue;
-
-                    nonGlobalPlugins.Add(actionKeyword, plugin);
+                    if (!nonGlobalPlugins.TryGetValue(actionKeyword, out var plugins))
+                    {
+                        plugins = [];
+                        nonGlobalPlugins[actionKeyword] = plugins;
+                    }
+                    plugins.Add(plugin);
                 }
             }
             return nonGlobalPlugins;
