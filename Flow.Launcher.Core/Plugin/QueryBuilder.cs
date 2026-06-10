@@ -35,7 +35,7 @@ namespace Flow.Launcher.Core.Plugin
             string possibleActionKeyword = terms[0];
             string[] searchTerms;
 
-            if (nonGlobalPlugins.TryGetValue(possibleActionKeyword, out var pluginPairs) && CheckPlugin(pluginPairs))
+            if (nonGlobalPlugins.TryGetValue(possibleActionKeyword, out var pluginPairs) && HasAnyEnabledPlugin(pluginPairs))
             {
                 // use non global plugin for query
                 actionKeyword = possibleActionKeyword;
@@ -61,7 +61,7 @@ namespace Flow.Launcher.Core.Plugin
             };
         }
 
-        private static bool CheckPlugin(List<PluginPair> pluginPairs)
+        private static bool HasAnyEnabledPlugin(List<PluginPair> pluginPairs)
         {
             lock (pluginPairs)
             {
