@@ -58,12 +58,17 @@ namespace Flow.Launcher.Plugin.PluginIndicator
                     // Skip global keywords
                     if (actionKeyword == Plugin.Query.GlobalPluginWildcardSign) continue;
 
-                    if (!nonGlobalPlugins.TryGetValue(actionKeyword, out var plugins))
+                    // See if we already assigned plugins to this keyword
+                    if (!nonGlobalPlugins.TryGetValue(actionKeyword, out var pluginsForKeyword))
                     {
-                        plugins = [];
-                        nonGlobalPlugins[actionKeyword] = plugins;
+                        pluginsForKeyword = [];
+                        nonGlobalPlugins[actionKeyword] = pluginsForKeyword;
                     }
-                    plugins.Add(plugin);
+
+                    // We allow the same keyword to have multiple different plugins and
+                    // there is no need to check for the same plugin having the same keyword multiple times,
+                    // as plugin manager and UI should prevent this - we can still display this state regardless
+                    pluginsForKeyword.Add(plugin);
                 }
             }
             return nonGlobalPlugins;
