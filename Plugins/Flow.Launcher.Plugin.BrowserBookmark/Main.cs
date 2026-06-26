@@ -10,6 +10,7 @@ using Flow.Launcher.Plugin.BrowserBookmark.Commands;
 using Flow.Launcher.Plugin.BrowserBookmark.Models;
 using Flow.Launcher.Plugin.BrowserBookmark.Views;
 using Flow.Launcher.Plugin.SharedCommands;
+using System.Security.Policy;
 
 namespace Flow.Launcher.Plugin.BrowserBookmark;
 
@@ -117,8 +118,17 @@ public class Main : ISettingProvider, IPlugin, IReloadable, IPluginI18n, IContex
             Score = score,
             Action = _ =>
             {
-                Context.API.OpenWebUrl(bookmark.Url);
-                return true;
+                try
+                {
+                    Context.API.OpenWebUrl(bookmark.Url);
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Context.API.LogException(ClassName, $"Failed to open bookmark: {bookmark.Url}", e);
+                    Context.API.ShowMsgError(Localize.flowlauncher_plugin_browserbookmark_open_failed(), bookmark.Url);
+                    return false;
+                }
             },
             ContextData = new BookmarkAttributes { Url = bookmark.Url }
         };
